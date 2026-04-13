@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kopi Kita</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        background: #f3f1ee;
+      }
+
+      header {
+        background: linear-gradient(135deg, #3e2723, #6d4c41);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 26px;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      /* CARD */
+      .card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+        opacity: 0;
+        animation: fadeUp 0.5s ease forwards;
+      }
+
+      .card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .card:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .card:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+
+      @keyframes fadeUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .card:hover {
+        transform: translateY(-6px) scale(1.03);
+      }
+
+      .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 15px;
+      }
+
+      .price {
+        color: #6d4c41;
+        font-weight: bold;
+      }
+
+      .add-btn {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background: #6d4c41;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        transition: 0.2s;
+      }
+
+      .add-btn:hover {
+        background: #4e342e;
+        transform: scale(1.05);
+      }
+
+      .add-btn:active {
+        transform: scale(0.9);
+      }
+
+      /* CART */
+      .cart-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #6d4c41;
+        color: white;
+        padding: 15px;
+        border-radius: 50%;
+        font-size: 18px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1001;
+      }
+
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
+        z-index: 1000;
+      }
+      .overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .cart-panel {
+        position: fixed;
+        right: -350px;
+        top: 0;
+        width: 320px;
+        height: 100%;
+        background: #fff;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.25);
+        padding: 20px;
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        z-index: 1002;
+      }
+      .cart-panel.active {
+        right: 0;
+      }
+
+      .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 18px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+
+      .close-btn {
+        background: #eee;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+      }
+
+      .cart-items {
+        flex: 1;
+        overflow: auto;
+        margin-top: 10px;
+      }
+
+      .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        background: #fafafa;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(40px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .qty-btn {
+        background: #eee;
+        border: none;
+        padding: 5px 9px;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+
+      .qty-btn:active {
+        transform: scale(0.9);
+      }
+
+      .delete-btn {
+        background: linear-gradient(135deg, #ff4d4d, #e53935);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+      }
+
+      .delete-btn:active {
+        transform: scale(0.8);
+      }
+
+      .total-box {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+        margin-top: 10px;
+        font-weight: 600;
+      }
+
+      .checkout {
+        background: green;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      /* TOAST */
+      .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #333;
+        color: white;
+        padding: 10px;
+        border-radius: 6px;
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+
+      /* MAP */
+      .map {
+        padding: 20px;
+      }
+
+      .map-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .map-header {
+        padding: 15px;
+        font-weight: 600;
+        background: #6d4c41;
+        color: white;
+      }
+
+      iframe {
+        width: 100%;
+        height: 250px;
+        border: none;
+      }
+
+      .map-footer {
+        padding: 10px;
+        text-align: center;
+      }
+
+      .map-btn {
+        background: #6d4c41;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>Kopi Kita ☕</header>
+
+    <div class="container" id="produk"></div>
+
+    <div class="map">
+      <div class="map-card">
+        <div class="map-header">📍 Lokasi Toko - Sigli</div>
+        <iframe
+          src="https://maps.google.com/maps?q=sigli%20aceh&output=embed"
+        ></iframe>
+        <div class="map-footer">
+          <button class="map-btn" onclick="bukaMaps()">
+            Buka di Google Maps
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-toggle" onclick="toggleCart()">🛒</div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <div class="cart-panel" id="cartPanel">
+      <div class="cart-header">
+        <span>Keranjang Kamu</span>
+        <button class="close-btn" onclick="toggleCart()">✖</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="total-box" id="total"></div>
+      <button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
+    </div>
+
+    <div class="toast" id="toast">Ditambahkan ke keranjang</div>
+
+    <script>
+      const produkList = [
+        {
+          nama: "Espresso",
+          harga: 10000,
+          img: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=400",
+        },
+        {
+          nama: "Cappuccino",
+          harga: 15000,
+          img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400",
+        },
+        {
+          nama: "Latte",
+          harga: 18000,
+          img: "https://images.unsplash.com/photo-1523942839745-7848d90b3e7b?w=400",
+        },
+        {
+          nama: "Americano",
+          harga: 12000,
+          img: "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=400",
+        },
+      ];
+
+      let cart = [];
+
+      function formatRupiah(n) {
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
+      function showToast() {
+        const t = document.getElementById("toast");
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 1200);
+      }
+
+      function toggleCart() {
+        document.getElementById("cartPanel").classList.toggle("active");
+        document.getElementById("overlay").classList.toggle("active");
+      }
+
+      function bukaMaps() {
+        window.open("https://www.google.com/maps?q=sigli+aceh");
+      }
+
+      function animateToCart(button) {
+        const cartIcon = document.querySelector(".cart-toggle");
+        const img = button.closest(".card").querySelector("img");
+
+        const clone = img.cloneNode(true);
+        const rect = img.getBoundingClientRect();
+        const cartRect = cartIcon.getBoundingClientRect();
+
+        clone.style.position = "fixed";
+        clone.style.left = rect.left + "px";
+        clone.style.top = rect.top + "px";
+        clone.style.width = rect.width + "px";
+        clone.style.height = rect.height + "px";
+        clone.style.zIndex = 9999;
+        clone.style.transition = "all 0.7s ease";
+
+        document.body.appendChild(clone);
+
+        setTimeout(() => {
+          clone.style.left = cartRect.left + "px";
+          clone.style.top = cartRect.top + "px";
+          clone.style.width = "20px";
+          clone.style.height = "20px";
+          clone.style.opacity = "0.3";
+        }, 10);
+
+        setTimeout(() => clone.remove(), 700);
+      }
+
+      function renderProduk() {
+        const el = document.getElementById("produk");
+        el.innerHTML = "";
+        produkList.forEach((p) => {
+          el.innerHTML += `
+    <div class="card">
+      <img src="${p.img}" onerror="this.src='https://picsum.photos/400/300?coffee'">
+      <div class="card-content">
+        <h3>${p.nama}</h3>
+        <p class="price">Rp${formatRupiah(p.harga)}</p>
+        <button class="add-btn" onclick="tambah('${p.nama}',${p.harga}); animateToCart(this)">Tambah</button>
+      </div>
+    </div>`;
+        });
+      }
+
+      function renderCart() {
+        const el = document.getElementById("cartItems");
+        el.innerHTML = "";
+
+        if (cart.length === 0) {
+          el.innerHTML = '<div class="empty">Keranjang kosong ☕</div>';
+          document.getElementById("total").innerText = "Total: Rp0";
+          return;
+        }
+
+        cart.forEach((item, i) => {
+          el.innerHTML += `
+    <div class="cart-item">
+      <div>
+        <div>${item.nama}</div>
+        <div style="font-size:12px;color:#777">Rp${formatRupiah(item.harga * item.qty)}</div>
+      </div>
+      <div class="controls">
+        <button class="qty-btn" onclick="kurang(${i})">-</button>
+        ${item.qty}
+        <button class="qty-btn" onclick="tambahQty(${i})">+</button>
+        <button class="delete-btn" onclick="hapus(${i})">🗑️</button>
+      </div>
+    </div>`;
+        });
+
+        let total = cart.reduce((s, i) => s + i.harga * i.qty, 0);
+        document.getElementById("total").innerText =
+          "Total: Rp" + formatRupiah(total);
+      }
+
+      function tambah(n, h) {
+        let item = cart.find((i) => i.nama === n);
+        if (item) {
+          item.qty++;
+        } else {
+          cart.push({ nama: n, harga: h, qty: 1 });
+        }
+        renderCart();
+        showToast();
+      }
+
+      function tambahQty(i) {
+        cart[i].qty++;
+        renderCart();
+      }
+      function kurang(i) {
+        if (cart[i].qty > 1) {
+          cart[i].qty--;
+        } else {
+          hapus(i);
+        }
+        renderCart();
+      }
+      function hapus(i) {
+        cart.splice(i, 1);
+        renderCart();
+      }
+
+      function checkout() {
+        if (cart.length === 0) {
+          alert("Keranjang kosong");
+          return;
+        }
+        let pesan = "Halo saya ingin pesan:%0A";
+        cart.forEach((i) => {
+          pesan += `- ${i.nama} x${i.qty} Rp${formatRupiah(i.harga * i.qty)}%0A`;
+        });
+        let total = cart.reduce((s, i) => s + i.harga * i.qty, 0);
+        pesan += `%0ATotal: Rp${formatRupiah(total)}`;
+        window.open(`https://wa.me/6281234567890?text=${pesan}`);
+      }
+
+      renderProduk();
+      renderCart();
+    </script>
+  </body>
+</html>
