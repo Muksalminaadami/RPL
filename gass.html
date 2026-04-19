@@ -1,0 +1,1802 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MM Gas</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --orange: #ff5c1a;
+        --orange-dark: #d94300;
+        --orange-light: #ff8a57;
+        --yellow: #ffd63f;
+        --dark: #0f0e0c;
+        --dark2: #1c1a16;
+        --dark3: #2a2720;
+        --cream: #f5efe0;
+        --cream2: #fff8ee;
+        --text-muted: #9a9080;
+        --white: #ffffff;
+        --flame1: #ff5c1a;
+        --flame2: #ffd63f;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--dark);
+        color: var(--cream);
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* Custom cursor */
+      .cursor {
+        width: 12px;
+        height: 12px;
+        background: var(--orange);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s,
+          height 0.2s,
+          background 0.2s;
+        mix-blend-mode: normal;
+      }
+      .cursor-ring {
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid var(--orange);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: all 0.12s ease;
+        opacity: 0.6;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--dark);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--orange);
+        border-radius: 2px;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.2rem 4rem;
+        background: transparent;
+        transition:
+          background 0.4s,
+          backdrop-filter 0.4s;
+      }
+      nav.scrolled {
+        background: rgba(15, 14, 12, 0.85);
+        backdrop-filter: blur(16px);
+        border-bottom: 0.5px solid rgba(255, 92, 26, 0.2);
+      }
+      .logo {
+        font-family: "Syne", sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        color: var(--white);
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--orange);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+      }
+      .nav-links a {
+        color: var(--cream);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        opacity: 0.7;
+        transition:
+          opacity 0.2s,
+          color 0.2s;
+      }
+      .nav-links a:hover {
+        opacity: 1;
+        color: var(--orange);
+      }
+      .nav-cta {
+        background: var(--orange);
+        color: var(--white) !important;
+        padding: 0.5rem 1.4rem;
+        border-radius: 2rem;
+        opacity: 1 !important;
+        font-weight: 500 !important;
+        transition:
+          background 0.2s,
+          transform 0.2s !important;
+      }
+      .nav-cta:hover {
+        background: var(--orange-dark) !important;
+        transform: scale(1.05);
+      }
+
+      /* ── HERO ── */
+      #hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding: 0 4rem;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 60% 60% at 70% 50%,
+            rgba(255, 92, 26, 0.18) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 20% 80%,
+            rgba(255, 214, 63, 0.08) 0%,
+            transparent 60%
+          ),
+          var(--dark);
+      }
+      /* Animated particles */
+      .particles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: var(--orange);
+        border-radius: 50%;
+        animation: float-up linear infinite;
+        opacity: 0;
+      }
+      @keyframes float-up {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-120vh) scale(0);
+          opacity: 0;
+        }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 620px;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 92, 26, 0.12);
+        border: 1px solid rgba(255, 92, 26, 0.3);
+        border-radius: 2rem;
+        padding: 0.35rem 1rem;
+        font-size: 0.8rem;
+        color: var(--orange-light);
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        animation: fadeInDown 0.8s ease both;
+      }
+      .hero-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: var(--orange);
+        border-radius: 50%;
+        animation: pulse-dot 1.5s infinite;
+      }
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.7);
+        }
+      }
+      .hero-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -2px;
+        animation: fadeInUp 0.9s 0.2s ease both;
+      }
+      .hero-title .line {
+        display: block;
+        overflow: hidden;
+      }
+      .hero-title .highlight {
+        color: var(--orange);
+        position: relative;
+      }
+      .hero-title .highlight::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--orange), var(--yellow));
+        border-radius: 2px;
+        animation: expand-line 1.2s 1s ease both;
+        transform-origin: left;
+        transform: scaleX(0);
+      }
+      @keyframes expand-line {
+        to {
+          transform: scaleX(1);
+        }
+      }
+      .hero-sub {
+        margin-top: 1.5rem;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: var(--text-muted);
+        max-width: 480px;
+        animation: fadeInUp 0.9s 0.4s ease both;
+      }
+      .hero-actions {
+        margin-top: 2.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        animation: fadeInUp 0.9s 0.6s ease both;
+      }
+      .btn-primary {
+        background: var(--orange);
+        color: var(--white);
+        padding: 0.85rem 2rem;
+        border-radius: 3rem;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.25s;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.15),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.5s;
+      }
+      .btn-primary:hover::before {
+        transform: translateX(100%);
+      }
+      .btn-primary:hover {
+        background: var(--orange-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(255, 92, 26, 0.35);
+      }
+      .btn-secondary {
+        color: var(--cream);
+        padding: 0.85rem 1.5rem;
+        border-radius: 3rem;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: all 0.25s;
+      }
+      .btn-secondary:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+
+      /* Gas cylinder illustration */
+      .hero-visual {
+        position: absolute;
+        right: 4rem;
+        top: 50%;
+        transform: translateY(-50%);
+        animation:
+          float-cylinder 3s ease-in-out infinite,
+          fadeIn 1s 0.5s ease both;
+        z-index: 2;
+      }
+      @keyframes float-cylinder {
+        0%,
+        100% {
+          transform: translateY(-50%);
+        }
+        50% {
+          transform: translateY(calc(-50% - 18px));
+        }
+      }
+      .cylinder-glow {
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 100px;
+        background: radial-gradient(
+          ellipse,
+          rgba(255, 92, 26, 0.4) 0%,
+          transparent 70%
+        );
+        filter: blur(20px);
+        animation: glow-pulse 3s ease-in-out infinite;
+      }
+      @keyframes glow-pulse {
+        0%,
+        100% {
+          opacity: 0.5;
+          transform: translateX(-50%) scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: translateX(-50%) scale(1.2);
+        }
+      }
+
+      /* ── STATS ── */
+      .stats-bar {
+        background: var(--dark2);
+        border-top: 1px solid rgba(255, 92, 26, 0.1);
+        border-bottom: 1px solid rgba(255, 92, 26, 0.1);
+        padding: 2rem 4rem;
+        display: flex;
+        gap: 0;
+      }
+      .stat-item {
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 0 1rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.6s,
+          transform 0.6s;
+      }
+      .stat-item:last-child {
+        border-right: none;
+      }
+      .stat-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .stat-num {
+        font-family: "Syne", sans-serif;
+        font-size: 2.4rem;
+        font-weight: 800;
+        color: var(--orange);
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        margin-top: 0.3rem;
+        font-weight: 400;
+      }
+
+      /* ── PRODUCTS ── */
+      #produk {
+        padding: 7rem 4rem;
+      }
+      .section-header {
+        margin-bottom: 4rem;
+      }
+      .section-tag {
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--orange);
+        margin-bottom: 0.8rem;
+      }
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -1px;
+        line-height: 1.1;
+      }
+      .section-title span {
+        color: var(--orange);
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .product-card {
+        background: var(--dark2);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        transition:
+          border-color 0.3s,
+          transform 0.3s,
+          box-shadow 0.3s;
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      .product-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .product-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--orange),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .product-card:hover {
+        border-color: rgba(255, 92, 26, 0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+      }
+      .product-card:hover::before {
+        opacity: 1;
+      }
+      .product-card.featured {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 92, 26, 0.12),
+          rgba(255, 214, 63, 0.05)
+        );
+        border-color: rgba(255, 92, 26, 0.3);
+      }
+      .product-card.featured::before {
+        opacity: 1;
+      }
+      .featured-badge {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+        background: var(--orange);
+        color: var(--white);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 0.25rem 0.7rem;
+        border-radius: 1rem;
+      }
+      .product-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1.5rem;
+      }
+      .product-name {
+        font-family: "Syne", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+      .product-desc {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      .product-price {
+        font-family: "Syne", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--orange);
+      }
+      .product-price span {
+        font-size: 0.85rem;
+        font-weight: 400;
+        color: var(--text-muted);
+        font-family: "DM Sans", sans-serif;
+      }
+      .product-cta {
+        margin-top: 1.2rem;
+        display: flex;
+        gap: 0.75rem;
+      }
+      .btn-order {
+        flex: 1;
+        background: var(--orange);
+        color: var(--white);
+        border: none;
+        border-radius: 2rem;
+        padding: 0.65rem 1rem;
+        font-size: 0.88rem;
+        font-weight: 500;
+        cursor: none;
+        transition: all 0.25s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .btn-order:hover {
+        background: var(--orange-dark);
+        transform: scale(1.03);
+      }
+      .btn-info {
+        background: transparent;
+        color: var(--cream);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 2rem;
+        padding: 0.65rem 1rem;
+        font-size: 0.88rem;
+        cursor: none;
+        transition: all 0.25s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .btn-info:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+
+      /* ── FEATURES ── */
+      #fitur {
+        padding: 7rem 4rem;
+        background: var(--dark2);
+        position: relative;
+        overflow: hidden;
+      }
+      #fitur::before {
+        content: "";
+        position: absolute;
+        top: -200px;
+        right: -200px;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 92, 26, 0.07) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+        margin-top: 3rem;
+      }
+      .feature-item {
+        background: var(--dark3);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.8rem;
+        display: flex;
+        gap: 1.2rem;
+        transition: all 0.3s;
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      .feature-item.visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .feature-item:hover {
+        border-color: rgba(255, 92, 26, 0.25);
+        background: rgba(255, 92, 26, 0.04);
+      }
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 92, 26, 0.12);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+        transition:
+          background 0.3s,
+          transform 0.3s;
+      }
+      .feature-item:hover .feature-icon {
+        background: rgba(255, 92, 26, 0.22);
+        transform: scale(1.1) rotate(-5deg);
+      }
+      .feature-text h3 {
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+      .feature-text p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      /* ── HOW IT WORKS ── */
+      #cara-kerja {
+        padding: 7rem 4rem;
+      }
+      .steps-container {
+        display: flex;
+        gap: 0;
+        margin-top: 4rem;
+        position: relative;
+      }
+      .steps-container::before {
+        content: "";
+        position: absolute;
+        top: 36px;
+        left: 60px;
+        right: 60px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 92, 26, 0.3),
+          rgba(255, 92, 26, 0.3),
+          transparent
+        );
+      }
+      .step {
+        flex: 1;
+        text-align: center;
+        padding: 0 1.5rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.6s,
+          transform 0.6s;
+      }
+      .step.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .step-num {
+        width: 72px;
+        height: 72px;
+        border: 2px solid rgba(255, 92, 26, 0.3);
+        border-radius: 50%;
+        background: var(--dark2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Syne", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--orange);
+        margin: 0 auto 1.5rem;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s;
+      }
+      .step:hover .step-num {
+        background: var(--orange);
+        color: var(--white);
+        border-color: var(--orange);
+        transform: scale(1.1);
+        box-shadow: 0 0 30px rgba(255, 92, 26, 0.4);
+      }
+      .step h3 {
+        font-family: "Syne", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+      }
+      .step p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      /* ── TESTIMONIALS ── */
+      #testimoni {
+        padding: 7rem 4rem;
+        background: var(--dark2);
+      }
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 3rem;
+      }
+      .testi-card {
+        background: var(--dark3);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 1.8rem;
+        transition: all 0.3s;
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      .testi-card.visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .testi-card:hover {
+        border-color: rgba(255, 92, 26, 0.2);
+        transform: translateY(-4px);
+      }
+      .stars {
+        color: var(--yellow);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+      }
+      .testi-text {
+        font-size: 0.9rem;
+        color: var(--cream);
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+        opacity: 0.85;
+      }
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--orange), var(--yellow));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--dark);
+        flex-shrink: 0;
+      }
+      .author-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .author-loc {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      /* ── CTA SECTION ── */
+      #cta {
+        padding: 7rem 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      #cta::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 70% 60% at 50% 50%,
+          rgba(255, 92, 26, 0.12) 0%,
+          transparent 70%
+        );
+      }
+      .cta-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        position: relative;
+        z-index: 1;
+        margin-bottom: 1rem;
+      }
+      .cta-sub {
+        color: var(--text-muted);
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        z-index: 1;
+      }
+      .cta-actions {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: var(--dark2);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 3rem 4rem 2rem;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+      .footer-brand .logo {
+        font-size: 1.4rem;
+        display: block;
+        margin-bottom: 0.8rem;
+      }
+      .footer-brand p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        line-height: 1.7;
+      }
+      .footer-col h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--cream);
+        margin-bottom: 1rem;
+      }
+      .footer-col ul {
+        list-style: none;
+      }
+      .footer-col ul li {
+        margin-bottom: 0.6rem;
+      }
+      .footer-col ul li a {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-col ul li a:hover {
+        color: var(--orange);
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer-bottom p {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+      }
+      .footer-socials {
+        display: flex;
+        gap: 0.8rem;
+      }
+      .social-btn {
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .social-btn:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+        transform: translateY(-2px);
+      }
+
+      /* ── WHATSAPP FLOAT ── */
+      .wa-float {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 200;
+        background: #25d366;
+        color: var(--white);
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        text-decoration: none;
+        box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+        transition: all 0.3s;
+        animation: bounce-wa 3s ease-in-out infinite;
+      }
+      @keyframes bounce-wa {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+      .wa-float:hover {
+        transform: scale(1.15) !important;
+        box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5);
+        animation: none;
+      }
+
+      /* ── ANIMATIONS ── */
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* ── FLAME ANIMATION ── */
+      .flame-container {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .flame {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform-origin: 50% 100%;
+        border-radius: 50% 50% 30% 70% / 60% 60% 40% 40%;
+        filter: blur(0px);
+        animation: flicker ease-in-out infinite alternate;
+      }
+      @keyframes flicker {
+        0% {
+          transform: translateX(-50%) scaleX(1) scaleY(1) rotate(-2deg);
+        }
+        100% {
+          transform: translateX(-50%) scaleX(0.85) scaleY(1.1) rotate(2deg);
+        }
+      }
+
+      /* Marquee */
+      .marquee-section {
+        overflow: hidden;
+        background: var(--orange);
+        padding: 0.8rem 0;
+      }
+      .marquee-track {
+        display: flex;
+        gap: 3rem;
+        animation: marquee 18s linear infinite;
+        white-space: nowrap;
+        width: max-content;
+      }
+      .marquee-track span {
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--white);
+        opacity: 0.85;
+      }
+      .marquee-track span.dot {
+        color: var(--yellow);
+        opacity: 1;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Progress bar on scroll */
+      #progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--orange), var(--yellow));
+        z-index: 1000;
+        width: 0%;
+        transition: width 0.1s;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 1rem 1.5rem;
+        }
+        .nav-links {
+          display: none;
+        }
+        #hero {
+          padding: 0 1.5rem;
+        }
+        .hero-visual {
+          display: none;
+        }
+        .stats-bar {
+          flex-direction: column;
+          gap: 1.5rem;
+          padding: 2rem 1.5rem;
+        }
+        .stat-item {
+          border-right: none;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          padding-bottom: 1.5rem;
+        }
+        #produk,
+        #fitur,
+        #cara-kerja,
+        #testimoni,
+        #cta {
+          padding: 5rem 1.5rem;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps-container {
+          flex-direction: column;
+          gap: 2rem;
+        }
+        .steps-container::before {
+          display: none;
+        }
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="progress-bar"></div>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- NAV -->
+    <nav id="navbar">
+      <a href="#" class="logo">MM<span>Gas</span></a>
+      <ul class="nav-links">
+        <li><a href="#produk">Produk</a></li>
+        <li><a href="#fitur">Keunggulan</a></li>
+        <li><a href="#cara-kerja">Cara Pesan</a></li>
+        <li><a href="#cta" class="nav-cta">Pesan Sekarang</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-bg"></div>
+      <div class="particles" id="particles"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge">🔥 Gas Terpercaya</div>
+        <h1 class="hero-title">
+          <span class="line">Gas Elpiji</span>
+          <span class="line"><span class="highlight">Terpercaya</span></span>
+          <span class="line">di Kulee</span>
+        </h1>
+        <p class="hero-sub">
+          Distribusi gas LPG 3 kg, 5,5 kg, dan 12 kg. Harga resmi
+        </p>
+        <div class="hero-actions">
+          <a href="#produk" class="btn-primary">🛒 Pesan Sekarang</a>
+          <a href="#cara-kerja" class="btn-secondary">Cara Pesan →</a>
+        </div>
+      </div>
+
+      <!-- SVG Cylinder Illustration -->
+      <div class="hero-visual">
+        <div class="cylinder-glow"></div>
+        <svg
+          width="260"
+          height="380"
+          viewBox="0 0 260 380"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- Cylinder body -->
+          <defs>
+            <linearGradient id="cylinGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color: #cc4a15" />
+              <stop offset="30%" style="stop-color: #ff5c1a" />
+              <stop offset="70%" style="stop-color: #ff8a57" />
+              <stop offset="100%" style="stop-color: #cc4a15" />
+            </linearGradient>
+            <linearGradient id="topGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color: #ff8a57" />
+              <stop offset="100%" style="stop-color: #ff5c1a" />
+            </linearGradient>
+            <linearGradient id="bottomGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color: #cc4a15" />
+              <stop offset="100%" style="stop-color: #993010" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Shadow on ground -->
+          <ellipse cx="130" cy="365" rx="80" ry="12" fill="rgba(0,0,0,0.5)" />
+
+          <!-- Bottom dome -->
+          <ellipse cx="130" cy="330" rx="80" ry="20" fill="url(#bottomGrad)" />
+
+          <!-- Main body -->
+          <rect
+            x="50"
+            y="80"
+            width="160"
+            height="250"
+            rx="4"
+            fill="url(#cylinGrad)"
+          />
+
+          <!-- Top dome -->
+          <ellipse cx="130" cy="80" rx="80" ry="22" fill="url(#topGrad)" />
+
+          <!-- Label band -->
+          <rect
+            x="50"
+            y="160"
+            width="160"
+            height="90"
+            rx="0"
+            fill="rgba(0,0,0,0.2)"
+          />
+          <rect
+            x="50"
+            y="160"
+            width="160"
+            height="4"
+            fill="rgba(255,255,255,0.15)"
+          />
+          <rect x="50" y="246" width="160" height="4" fill="rgba(0,0,0,0.2)" />
+
+          <!-- Label text -->
+          <text
+            x="130"
+            y="200"
+            text-anchor="middle"
+            font-family="'Syne', sans-serif"
+            font-size="28"
+            font-weight="800"
+            fill="white"
+            opacity="0.95"
+          >
+            LPG
+          </text>
+          <text
+            x="130"
+            y="228"
+            text-anchor="middle"
+            font-family="'DM Sans', sans-serif"
+            font-size="13"
+            fill="rgba(255,255,255,0.7)"
+          >
+            Elpiji Subsidi
+          </text>
+
+          <!-- Highlight reflection -->
+          <rect
+            x="68"
+            y="90"
+            width="30"
+            height="220"
+            rx="15"
+            fill="rgba(255,255,255,0.1)"
+          />
+
+          <!-- Neck -->
+          <rect x="108" y="56" width="44" height="28" rx="6" fill="#CC4A15" />
+          <ellipse cx="130" cy="56" rx="22" ry="8" fill="#FF6B2B" />
+
+          <!-- Valve -->
+          <rect x="116" y="32" width="28" height="28" rx="6" fill="#888" />
+          <ellipse cx="130" cy="32" rx="14" ry="6" fill="#aaa" />
+          <rect x="124" y="14" width="12" height="20" rx="6" fill="#777" />
+          <ellipse cx="130" cy="14" rx="6" ry="6" fill="#999" />
+
+          <!-- Flame on top of valve with animation -->
+          <g filter="url(#glow)">
+            <ellipse cx="130" cy="8" rx="6" ry="8" fill="#FFD63F" opacity="0.9">
+              <animate
+                attributeName="ry"
+                values="8;10;7;9;8"
+                dur="0.4s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.9;1;0.8;1;0.9"
+                dur="0.3s"
+                repeatCount="indefinite"
+              />
+            </ellipse>
+            <ellipse cx="130" cy="6" rx="4" ry="6" fill="#FF8A00">
+              <animate
+                attributeName="ry"
+                values="6;8;5;7;6"
+                dur="0.35s"
+                repeatCount="indefinite"
+              />
+            </ellipse>
+            <ellipse cx="130" cy="4" rx="2" ry="3" fill="white" opacity="0.8">
+              <animate
+                attributeName="opacity"
+                values="0.8;1;0.6;0.9;0.8"
+                dur="0.25s"
+                repeatCount="indefinite"
+              />
+            </ellipse>
+          </g>
+
+          <!-- Bottom ring -->
+          <ellipse cx="130" cy="348" rx="70" ry="15" fill="rgba(0,0,0,0.0)" />
+          <path
+            d="M60 348 Q130 340 200 348 Q130 360 60 348Z"
+            fill="#993010"
+            opacity="0.6"
+          />
+        </svg>
+      </div>
+    </section>
+
+    <!-- PRODUK -->
+    <section id="produk">
+      <div class="section-header">
+        <div class="section-tag">Produk Kami</div>
+        <h2 class="section-title">
+          Pilih <span>Gas Elpiji</span><br />Sesuai Kebutuhan
+        </h2>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" style="transition-delay: 0.1s">
+          <svg class="product-icon" viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FF5C1A" />
+                <stop offset="100%" stop-color="#FFD63F" />
+              </linearGradient>
+            </defs>
+            <rect
+              x="14"
+              y="14"
+              width="36"
+              height="40"
+              rx="8"
+              fill="url(#g1)"
+              opacity="0.9"
+            />
+            <ellipse cx="32" cy="14" rx="18" ry="6" fill="#FF8A57" />
+            <ellipse cx="32" cy="54" rx="18" ry="6" fill="#CC4A15" />
+            <rect x="26" y="6" width="12" height="10" rx="4" fill="#888" />
+            <text
+              x="32"
+              y="40"
+              text-anchor="middle"
+              font-family="Syne"
+              font-size="11"
+              font-weight="800"
+              fill="white"
+            >
+              3 Kg
+            </text>
+          </svg>
+          <div class="product-name">Gas LPG 3 Kg</div>
+          <div class="product-desc">
+            Tabung subsidi untuk rumah tangga. Sesuai ketentuan pemerintah,
+            harga terjangkau untuk semua kalangan.
+          </div>
+          <div class="product-price">Rp 18.000 <span>/ tabung</span></div>
+          <div class="product-cta">
+            <button class="btn-order" onclick="openWA('LPG 3 Kg')">
+              Pesan Sekarang
+            </button>
+            <button class="btn-info" onclick="showInfo('3kg')">Detail</button>
+          </div>
+        </div>
+
+        <div class="product-card featured" style="transition-delay: 0.2s">
+          <div class="featured-badge">⭐ Terlaris</div>
+          <svg class="product-icon" viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FF5C1A" />
+                <stop offset="100%" stop-color="#FF8A57" />
+              </linearGradient>
+            </defs>
+            <rect x="12" y="10" width="40" height="46" rx="8" fill="url(#g2)" />
+            <ellipse cx="32" cy="10" rx="20" ry="7" fill="#FF8A57" />
+            <ellipse cx="32" cy="56" rx="20" ry="7" fill="#CC4A15" />
+            <rect x="25" y="2" width="14" height="10" rx="4" fill="#888" />
+            <text
+              x="32"
+              y="40"
+              text-anchor="middle"
+              font-family="Syne"
+              font-size="9"
+              font-weight="800"
+              fill="white"
+            >
+              5.5 Kg
+            </text>
+          </svg>
+          <div class="product-name">Gas LPG 5,5 Kg</div>
+          <div class="product-desc">
+            Pilihan ideal untuk keluarga kecil dan usaha kecil. Lebih hemat,
+            lebih lama, lebih praktis untuk penggunaan sehari-hari.
+          </div>
+          <div class="product-price">Rp 75.000 <span>/ tabung</span></div>
+          <div class="product-cta">
+            <button class="btn-order" onclick="openWA('LPG 5.5 Kg')">
+              Pesan Sekarang
+            </button>
+            <button class="btn-info" onclick="showInfo('5kg')">Detail</button>
+          </div>
+        </div>
+
+        <div class="product-card" style="transition-delay: 0.3s">
+          <svg class="product-icon" viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1A6EFF" />
+                <stop offset="100%" stop-color="#57AAFF" />
+              </linearGradient>
+            </defs>
+            <rect x="10" y="8" width="44" height="50" rx="8" fill="url(#g3)" />
+            <ellipse cx="32" cy="8" rx="22" ry="8" fill="#57AAFF" />
+            <ellipse cx="32" cy="58" rx="22" ry="8" fill="#0A4ECC" />
+            <rect x="24" y="0" width="16" height="10" rx="4" fill="#666" />
+            <text
+              x="32"
+              y="40"
+              text-anchor="middle"
+              font-family="Syne"
+              font-size="9"
+              font-weight="800"
+              fill="white"
+            >
+              12 Kg
+            </text>
+          </svg>
+          <div class="product-name">Gas LPG 12 Kg</div>
+          <div class="product-desc">
+            Solusi terbaik untuk restoran, catering, dan bisnis kuliner.
+            Kapasitas besar, efisien untuk operasional skala menengah.
+          </div>
+          <div class="product-price">Rp 195.000 <span>/ tabung</span></div>
+          <div class="product-cta">
+            <button class="btn-order" onclick="openWA('LPG 12 Kg')">
+              Pesan Sekarang
+            </button>
+            <button class="btn-info" onclick="showInfo('12kg')">Detail</button>
+          </div>
+        </div>
+
+        <div class="product-card" style="transition-delay: 0.4s">
+          <svg class="product-icon" viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFD63F" />
+                <stop offset="100%" stop-color="#FF8A00" />
+              </linearGradient>
+            </defs>
+            <rect x="8" y="6" width="48" height="52" rx="8" fill="url(#g4)" />
+            <ellipse cx="32" cy="6" rx="24" ry="8" fill="#FFE57A" />
+            <ellipse cx="32" cy="58" rx="24" ry="8" fill="#CC9900" />
+            <rect x="24" y="-2" width="16" height="10" rx="4" fill="#888" />
+            <text
+              x="32"
+              y="40"
+              text-anchor="middle"
+              font-family="Syne"
+              font-size="9"
+              font-weight="800"
+              fill="#7A4000"
+            >
+              50 Kg
+            </text>
+          </svg>
+          <div class="product-name">Gas LPG 50 Kg</div>
+          <div class="product-desc">
+            Untuk industri, hotel, dan usaha besar. Kapasitas maksimal dengan
+            keamanan tertinggi. Tersedia layanan instalasi gratis.
+          </div>
+          <div class="product-price">Rp 820.000 <span>/ tabung</span></div>
+          <div class="product-cta">
+            <button class="btn-order" onclick="openWA('LPG 50 Kg')">
+              Hubungi Kami
+            </button>
+            <button class="btn-info" onclick="showInfo('50kg')">Detail</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FITUR -->
+    <section id="fitur">
+      <div class="section-header">
+        <div class="section-tag">Keunggulan</div>
+        <h2 class="section-title">Kenapa <span>Pilih GasKu?</span></h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-item" style="transition-delay: 0.1s">
+          <div class="feature-icon">🏷️</div>
+          <div class="feature-text">
+            <h3>Harga Resmi & Transparan</h3>
+            <p>
+              Harga mengikuti HET resmi pemerintah. Tidak ada biaya tersembunyi.
+              Invoice digital dikirim otomatis setiap transaksi.
+            </p>
+          </div>
+        </div>
+        <div class="feature-item" style="transition-delay: 0.15s">
+          <div class="feature-icon">🛡️</div>
+          <div class="feature-text">
+            <h3>Tabung Bersertifikat SNI</h3>
+            <p>
+              Semua tabung melewati uji keamanan ketat dan bersertifikat SNI
+            </p>
+          </div>
+        </div>
+        <div class="feature-item" style="transition-delay: 0.2s">
+          <div class="feature-icon">📱</div>
+          <div class="feature-text">
+            <h3>Pesan via WhatsApp Mudah</h3>
+            <p>Cukup chat WhatsApp, Tidak perlu aplikasi tambahan</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARA KERJA -->
+    <section id="cara-kerja">
+      <div class="section-header">
+        <div class="section-tag">Cara Pesan</div>
+        <h2 class="section-title">Mudah dalam<br /><span>4 Langkah</span></h2>
+      </div>
+      <div class="steps-container">
+        <div class="step" style="transition-delay: 0.1s">
+          <div class="step-num">1</div>
+          <h3>Pilih Produk</h3>
+          <p>
+            Pilih jenis dan jumlah tabung gas yang Anda butuhkan dari katalog
+            kami
+          </p>
+        </div>
+        <div class="step" style="transition-delay: 0.2s">
+          <div class="step-num">2</div>
+          <h3>Chat WhatsApp</h3>
+          <p>Kirim pesanan via WhatsApp ke nomor kami</p>
+        </div>
+        <div class="step" style="transition-delay: 0.3s">
+          <div class="step-num">3</div>
+          <h3>Bayar</h3>
+          <p>Bayar Cash Only</p>
+        </div>
+        <div class="step" style="transition-delay: 0.4s">
+          <div class="step-num">4</div>
+          <h3>Gas Diantar!</h3>
+          <p>Diantar Sesuai Pesanan</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="cta">
+      <h2 class="cta-title">
+        Siap Pesan Gas<br /><span style="color: var(--orange)"
+          >Sekarang Juga?</span
+        >
+      </h2>
+      <p class="cta-sub">Hubungi kami sekarang</p>
+      <div class="cta-actions">
+        <a
+          href="https://wa.me/6283872035848?text=Halo GasKu, saya ingin memesan gas"
+          class="btn-primary"
+          target="_blank"
+          >💬 Pesan via WhatsApp</a
+        >
+        <a href="tel:+6283872035848" class="btn-secondary">📞 Hubungi Kami</a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="logo">Gas<span>Ku</span></a>
+          <p>
+            Distributor resmi gas LPG di Kulee. Melayani dengan hati,
+            mengantarkan kebutuhan energi Anda
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Produk</h4>
+          <ul>
+            <li><a href="#produk">Gas LPG 3 Kg</a></li>
+            <li><a href="#produk">Gas LPG 5,5 Kg</a></li>
+            <li><a href="#produk">Gas LPG 12 Kg</a></li>
+            <li><a href="#produk">Gas LPG 50 Kg</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Perusahaan</h4>
+          <ul>
+            <li><a href="#">Tentang Kami</a></li>
+            <li><a href="#">Karir</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kontak</h4>
+          <ul>
+            <li><a href="tel:+6283872035848">📞 0838-7203-5848</a></li>
+            <li>
+              <a href="mailto:muksalminaadami01@gmail.com"
+                >✉️ muksalminaadami01@gmail.com</a
+              >
+            </li>
+            <li><a href="#">📍 Kulee, Aceh</a></li>
+            <li><a href="#">🕐 Buka Siang Je</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026. Muksalmina Adami</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">ig</a>
+          <a href="#" class="social-btn">tw</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a
+      href="https://wa.me/6283872035848?text=Halo MM Gas, saya ingin memesan gas!"
+      class="wa-float"
+      target="_blank"
+      title="Pesan via WhatsApp"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
+      </svg>
+    </a>
+
+    <script>
+      // Custom cursor
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursor-ring");
+      let mouseX = 0,
+        mouseY = 0,
+        ringX = 0,
+        ringY = 0;
+      document.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursor.style.left = mouseX + "px";
+        cursor.style.top = mouseY + "px";
+      });
+      function animRing() {
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        ring.style.left = ringX + "px";
+        ring.style.top = ringY + "px";
+        requestAnimationFrame(animRing);
+      }
+      animRing();
+      document
+        .querySelectorAll("a, button, .product-card, .feature-item")
+        .forEach((el) => {
+          el.addEventListener("mouseenter", () => {
+            cursor.style.width = "20px";
+            cursor.style.height = "20px";
+            ring.style.width = "50px";
+            ring.style.height = "50px";
+            ring.style.opacity = "0.3";
+          });
+          el.addEventListener("mouseleave", () => {
+            cursor.style.width = "12px";
+            cursor.style.height = "12px";
+            ring.style.width = "36px";
+            ring.style.height = "36px";
+            ring.style.opacity = "0.6";
+          });
+        });
+
+      // Nav scroll
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 50);
+        // Progress bar
+        const h = document.documentElement;
+        const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+        document.getElementById("progress-bar").style.width = pct + "%";
+      });
+
+      // Particles
+      const particlesEl = document.getElementById("particles");
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.style.cssText = `
+    left: ${Math.random() * 100}%;
+    bottom: ${Math.random() * 20}%;
+    animation-duration: ${4 + Math.random() * 8}s;
+    animation-delay: ${Math.random() * 8}s;
+    width: ${1 + Math.random() * 3}px;
+    height: ${1 + Math.random() * 3}px;
+    background: ${Math.random() > 0.5 ? "var(--orange)" : "var(--yellow)"};
+  `;
+        particlesEl.appendChild(p);
+      }
+
+      // Intersection Observer for animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+              setTimeout(
+                () => e.target.classList.add("visible"),
+                parseInt(e.target.style.transitionDelay || "0") * 1000,
+              );
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
+      document
+        .querySelectorAll(
+          ".stat-item, .product-card, .feature-item, .step, .testi-card",
+        )
+        .forEach((el) => observer.observe(el));
+
+      // Counter animation
+      function animateCount(el, target) {
+        let current = 0;
+        const duration = 2000;
+        const step = target / (duration / 16);
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = Math.floor(current).toLocaleString("id-ID");
+          if (current >= target) {
+            el.textContent =
+              target.toLocaleString("id-ID") +
+              (el.dataset.count == 99
+                ? "%"
+                : el.dataset.count == 24
+                  ? "/7"
+                  : "+");
+            clearInterval(timer);
+          }
+        }, 16);
+      }
+      const countObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target
+                .querySelectorAll("[data-count]")
+                .forEach((el) => animateCount(el, +el.dataset.count));
+              countObserver.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      document.querySelector(".stats-bar") &&
+        countObserver.observe(document.querySelector(".stats-bar"));
+
+      // WhatsApp order
+      function openWA(product) {
+        const msg = encodeURIComponent(
+          `Halo GasKu! Saya ingin memesan ${product}. Mohon informasi lebih lanjut.`,
+        );
+        window.open(`https://wa.me/6281234567890?text=${msg}`, "_blank");
+      }
+
+      // Info modal (simple alert)
+      function showInfo(type) {
+        const info = {
+          "3kg":
+            "Gas LPG 3 Kg\n• Harga HET: Rp 18.000\n• Berat: 3 Kg gas + tabung\n• Warna tabung: Merah\n• Peruntukan: Rumah tangga subsidi\n• Tersedia di seluruh Aceh",
+          "5kg":
+            "Gas LPG 5,5 Kg\n• Harga: Rp 75.000\n• Berat: 5.5 Kg gas + tabung\n• Warna tabung: Abu-abu\n• Peruntukan: Rumah tangga/UMKM\n• Gratis regulator untuk pembelian pertama",
+          "12kg":
+            "Gas LPG 12 Kg\n• Harga: Rp 195.000\n• Berat: 12 Kg gas + tabung\n• Warna tabung: Biru\n• Peruntukan: Bisnis kuliner/restoran\n• Gratis pengecekan instalasi",
+          "50kg":
+            "Gas LPG 50 Kg\n• Harga: Rp 820.000\n• Berat: 50 Kg gas + tabung\n• Warna tabung: Kuning\n• Peruntukan: Industri/hotel\n• Gratis instalasi + service berkala",
+        };
+        alert(info[type]);
+      }
+    </script>
+  </body>
+</html>
