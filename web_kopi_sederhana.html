@@ -4,157 +4,511 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kopi Kita</title>
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
-
     <style>
-      * {
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
         margin: 0;
-        background: #f3f1ee;
+        padding: 0;
       }
 
-      header {
-        background: linear-gradient(135deg, #3e2723, #6d4c41);
-        color: white;
-        padding: 20px;
+      :root {
+        --bg: #060608;
+        --s1: #0e0e12;
+        --s2: #16161c;
+        --s3: #1e1e26;
+        --border: rgba(255, 255, 255, 0.06);
+        --border2: rgba(255, 255, 255, 0.12);
+        --text: #f2f2f5;
+        --muted: #666;
+        --muted2: #999;
+        --accent: #00e5a0;
+        --accent2: #00b87d;
+        --accent-dim: rgba(0, 229, 160, 0.12);
+        --accent-dim2: rgba(0, 229, 160, 0.05);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        overflow-x: hidden;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* grid bg */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px
+          );
+        background-size: 64px 64px;
+      }
+
+      /* === NAV === */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 0 2.5rem;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+        background: rgba(6, 6, 8, 0.92);
+        backdrop-filter: blur(18px);
+        animation: slideDown 0.7s ease both;
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .nav-logo {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: blink 2.5s infinite;
+        flex-shrink: 0;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+          box-shadow: 0 0 0 0 rgba(0, 229, 160, 0.5);
+        }
+        50% {
+          opacity: 0.4;
+          box-shadow: 0 0 0 5px rgba(0, 229, 160, 0);
+        }
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .cart-badge-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: var(--s2);
+        border: 1px solid var(--border2);
+        cursor: pointer;
+        transition: all 0.25s;
+        flex-shrink: 0;
+      }
+      .cart-badge-wrap:hover {
+        border-color: rgba(0, 229, 160, 0.4);
+        background: var(--s3);
+      }
+      .cart-badge-wrap svg {
+        width: 17px;
+        height: 17px;
+        color: var(--text);
+      }
+      .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: var(--accent);
+        color: #060608;
+        font-size: 9px;
+        font-weight: 700;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        display: none;
+      }
+
+      /* === HERO === */
+      .hero {
+        min-height: 38vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        font-size: 26px;
+        padding: 7rem 1.5rem 3rem;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 229, 160, 0.05) 0%,
+          transparent 65%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -55%);
+        pointer-events: none;
+        animation: glowPulse 5s ease-in-out infinite;
+      }
+      @keyframes glowPulse {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: translate(-50%, -55%) scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: translate(-50%, -55%) scale(1.08);
+        }
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: var(--accent-dim2);
+        border: 1px solid rgba(0, 229, 160, 0.14);
+        border-radius: 100px;
+        padding: 6px 16px;
+        margin-bottom: 1.2rem;
+        animation: fadeUp 0.8s 0.2s ease both;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hero h1 {
+        font-size: clamp(2rem, 6vw, 3.8rem);
+        font-weight: 700;
+        letter-spacing: -0.035em;
+        line-height: 1.1;
+        animation: fadeUp 0.8s 0.3s ease both;
+      }
+      .hero h1 span {
+        color: var(--accent);
+      }
+      .hero-sub {
+        font-size: 14px;
+        color: var(--muted2);
+        margin-top: 0.8rem;
+        animation: fadeUp 0.8s 0.4s ease both;
       }
 
-      .container {
+      /* === SECTION === */
+      .section-wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 5rem;
+        position: relative;
+        z-index: 2;
+      }
+      .stag {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .stag::before {
+        content: "";
+        width: 18px;
+        height: 1px;
+        background: var(--accent);
+      }
+      .stitle {
+        font-size: clamp(1.3rem, 3vw, 1.8rem);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin-bottom: 1.8rem;
+        line-height: 1.2;
+      }
+
+      /* === PRODUCT GRID === */
+      .pgrid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        padding: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+      }
+      @media (max-width: 500px) {
+        .pgrid {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+      }
+      @media (max-width: 360px) {
+        .pgrid {
+          grid-template-columns: 1fr;
+        }
       }
 
-      /* CARD */
-      .card {
-        background: white;
-        border-radius: 15px;
+      /* === PRODUCT CARD === */
+      .pcard {
+        background: var(--s1);
+        border: 1px solid var(--border);
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        transition: 0.3s;
+        transition: all 0.3s;
+        position: relative;
+        display: flex;
+        flex-direction: column;
         opacity: 0;
         animation: fadeUp 0.5s ease forwards;
       }
-
-      .card:nth-child(1) {
+      .pcard:nth-child(1) {
         animation-delay: 0.1s;
       }
-      .card:nth-child(2) {
+      .pcard:nth-child(2) {
         animation-delay: 0.2s;
       }
-      .card:nth-child(3) {
+      .pcard:nth-child(3) {
         animation-delay: 0.3s;
       }
-      .card:nth-child(4) {
+      .pcard:nth-child(4) {
         animation-delay: 0.4s;
       }
-      .card:nth-child(5) {
-        animation-delay: 0.5s;
+
+      .pcard::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        opacity: 0;
+        background: radial-gradient(
+          500px circle at var(--mx, 50%) var(--my, 50%),
+          rgba(0, 229, 160, 0.05),
+          transparent 40%
+        );
+        transition: opacity 0.3s;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .pcard:hover {
+        border-color: rgba(0, 229, 160, 0.22);
+        transform: translateY(-5px);
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+      }
+      .pcard:hover::before {
+        opacity: 1;
       }
 
-      @keyframes fadeUp {
-        from {
-          transform: translateY(20px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      .card:hover {
-        transform: translateY(-6px) scale(1.03);
-      }
-
-      .card img {
+      .pthumb {
         width: 100%;
-        height: 150px;
+        height: 140px;
+        overflow: hidden;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+        border-bottom: 1px solid var(--border);
+      }
+      .pthumb img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+        display: block;
+        transition: transform 0.4s;
+      }
+      .pcard:hover .pthumb img {
+        transform: scale(1.06);
       }
 
-      .card-content {
-        padding: 15px;
+      .pbody {
+        padding: 1rem 1.1rem 1.1rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
       }
-
-      .price {
-        color: #6d4c41;
-        font-weight: bold;
+      .pname {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
       }
-
+      .pprice {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 0.8rem;
+      }
       .add-btn {
         width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        background: #6d4c41;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        transition: 0.2s;
+        padding: 9px;
+        background: var(--accent-dim);
+        color: var(--accent);
+        border: 1px solid rgba(0, 229, 160, 0.25);
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s;
+        letter-spacing: 0.03em;
+        margin-top: auto;
       }
-
       .add-btn:hover {
-        background: #4e342e;
-        transform: scale(1.05);
+        background: var(--accent);
+        color: #060608;
+        border-color: var(--accent);
+        transform: translateY(-2px);
       }
-
       .add-btn:active {
-        transform: scale(0.9);
+        transform: scale(0.96);
       }
 
-      /* CART */
-      .cart-toggle {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #6d4c41;
-        color: white;
-        padding: 15px;
-        border-radius: 50%;
-        font-size: 18px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        z-index: 1001;
+      /* === DIVIDER === */
+      .divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
       }
 
+      /* === MAP SECTION === */
+      .map-card {
+        background: var(--s1);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .map-header {
+        padding: 14px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+      }
+      .map-header span {
+        color: var(--accent);
+      }
+      iframe {
+        width: 100%;
+        height: 240px;
+        border: none;
+        display: block;
+        filter: grayscale(0.3) invert(0.85) hue-rotate(150deg);
+        opacity: 0.85;
+      }
+      .map-footer {
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+      }
+      .map-footer p {
+        font-size: 12px;
+        color: var(--muted2);
+      }
+      .map-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: var(--accent-dim);
+        color: var(--accent);
+        border: 1px solid rgba(0, 229, 160, 0.25);
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .map-btn:hover {
+        background: var(--accent);
+        color: #060608;
+      }
+
+      /* === OVERLAY === */
       .overlay {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.6);
         opacity: 0;
         pointer-events: none;
         transition: 0.3s;
         z-index: 1000;
+        backdrop-filter: blur(4px);
       }
       .overlay.active {
         opacity: 1;
         pointer-events: auto;
       }
 
+      /* === CART PANEL === */
       .cart-panel {
         position: fixed;
-        right: -350px;
+        right: -360px;
         top: 0;
-        width: 320px;
+        width: 340px;
         height: 100%;
-        background: #fff;
-        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.25);
-        padding: 20px;
-        transition: 0.3s;
+        background: var(--s1);
+        border-left: 1px solid var(--border2);
+        padding: 0;
+        transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         flex-direction: column;
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
         z-index: 1002;
       }
       .cart-panel.active {
@@ -165,41 +519,92 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-weight: 600;
-        font-size: 18px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
       }
-
+      .cart-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .cart-header-left svg {
+        width: 18px;
+        height: 18px;
+        color: var(--accent);
+      }
+      .cart-title {
+        font-size: 15px;
+        font-weight: 700;
+      }
       .close-btn {
-        background: #eee;
-        border: none;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--s2);
+        border: 1px solid var(--border);
+        color: var(--muted2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        transition: all 0.2s;
+      }
+      .close-btn:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--text);
       }
 
       .cart-items {
         flex: 1;
-        overflow: auto;
-        margin-top: 10px;
+        overflow-y: auto;
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cart-items::-webkit-scrollbar {
+        width: 4px;
+      }
+      .cart-items::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .cart-items::-webkit-scrollbar-thumb {
+        background: var(--s3);
+        border-radius: 4px;
+      }
+
+      .empty-cart {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        padding: 2rem 0;
+      }
+      .empty-cart svg {
+        width: 40px;
+        height: 40px;
+        opacity: 0.3;
       }
 
       .cart-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
-        padding: 12px;
+        padding: 12px 14px;
+        background: var(--s2);
+        border: 1px solid var(--border);
         border-radius: 12px;
-        background: #fafafa;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
         animation: slideIn 0.3s ease;
+        gap: 10px;
       }
-
       @keyframes slideIn {
         from {
-          transform: translateX(40px);
+          transform: translateX(30px);
           opacity: 0;
         }
         to {
@@ -207,144 +612,335 @@
           opacity: 1;
         }
       }
-
+      .ci-name {
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 2px;
+      }
+      .ci-price {
+        font-size: 11px;
+        color: var(--accent);
+        font-weight: 600;
+      }
       .controls {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
+        flex-shrink: 0;
       }
-
       .qty-btn {
-        background: #eee;
-        border: none;
-        padding: 5px 9px;
+        width: 26px;
+        height: 26px;
         border-radius: 6px;
-        font-weight: bold;
+        background: var(--s3);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
       }
-
+      .qty-btn:hover {
+        border-color: rgba(0, 229, 160, 0.3);
+        color: var(--accent);
+      }
       .qty-btn:active {
         transform: scale(0.9);
       }
-
-      .delete-btn {
-        background: linear-gradient(135deg, #ff4d4d, #e53935);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 28px;
-        height: 28px;
-      }
-
-      .delete-btn:active {
-        transform: scale(0.8);
-      }
-
-      .total-box {
-        border-top: 1px solid #eee;
-        padding-top: 10px;
-        margin-top: 10px;
+      .qty-num {
+        font-size: 13px;
         font-weight: 600;
+        min-width: 18px;
+        text-align: center;
+      }
+      .delete-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        background: rgba(255, 60, 60, 0.12);
+        border: 1px solid rgba(255, 60, 60, 0.2);
+        color: #ff6b6b;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        transition: all 0.2s;
+        margin-left: 2px;
+      }
+      .delete-btn:hover {
+        background: rgba(255, 60, 60, 0.2);
+        border-color: rgba(255, 60, 60, 0.4);
+      }
+      .delete-btn:active {
+        transform: scale(0.85);
       }
 
-      .checkout {
-        background: green;
-        color: white;
-        padding: 12px;
-        border: none;
+      .cart-footer {
+        padding: 14px 16px;
+        border-top: 1px solid var(--border);
+      }
+      .total-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        background: var(--s2);
+        border: 1px solid var(--border);
         border-radius: 10px;
+        margin-bottom: 10px;
+      }
+      .total-label {
+        font-size: 12px;
+        color: var(--muted2);
+      }
+      .total-val {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .checkout {
         width: 100%;
-        margin-top: 10px;
+        padding: 13px;
+        background: var(--accent);
+        color: #060608;
+        border: none;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 0.03em;
+        transition: all 0.25s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .checkout:hover {
+        background: #00c98d;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(0, 229, 160, 0.28);
+      }
+      .checkout svg {
+        width: 16px;
+        height: 16px;
       }
 
-      /* TOAST */
+      /* === TOAST === */
       .toast {
         position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #333;
-        color: white;
-        padding: 10px;
-        border-radius: 6px;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--s2);
+        border: 1px solid rgba(0, 229, 160, 0.25);
+        color: var(--text);
+        padding: 10px 20px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 500;
         opacity: 0;
-        transition: 0.3s;
+        pointer-events: none;
+        transition: all 0.3s;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
       }
       .toast.show {
         opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      .toast-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
       }
 
-      /* MAP */
-      .map {
-        padding: 20px;
-      }
-
-      .map-card {
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-      }
-
-      .map-header {
-        padding: 15px;
-        font-weight: 600;
-        background: #6d4c41;
-        color: white;
-      }
-
-      iframe {
-        width: 100%;
-        height: 250px;
-        border: none;
-      }
-
-      .map-footer {
-        padding: 10px;
+      /* === FOOTER === */
+      footer {
         text-align: center;
+        padding: 2.5rem;
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--muted);
+        position: relative;
+        z-index: 2;
+        letter-spacing: 0.04em;
+      }
+      footer em {
+        color: var(--accent);
+        font-style: normal;
       }
 
-      .map-btn {
-        background: #6d4c41;
-        color: white;
-        padding: 8px 15px;
-        border: none;
-        border-radius: 8px;
+      @media (max-width: 480px) {
+        .section-wrap {
+          padding: 1.5rem 1rem 4rem;
+        }
+        nav {
+          padding: 0 1rem;
+        }
+        .cart-panel {
+          width: 100%;
+          right: -100%;
+          border-left: none;
+          border-top: 1px solid var(--border2);
+          top: auto;
+          bottom: -100%;
+          height: 85vh;
+          border-radius: 20px 20px 0 0;
+        }
+        .cart-panel.active {
+          right: 0;
+          bottom: 0;
+        }
       }
     </style>
   </head>
-
   <body>
-    <header>Kopi Kita ☕</header>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-logo">
+        <span class="nav-dot"></span>
+        Kopi Kita
+      </div>
+      <div class="nav-right">
+        <div class="cart-badge-wrap" onclick="toggleCart()" title="Keranjang">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <div class="badge" id="badge">0</div>
+        </div>
+      </div>
+    </nav>
 
-    <div class="container" id="produk"></div>
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-glow"></div>
+      <div class="eyebrow">
+        <span class="nav-dot" style="width: 5px; height: 5px"></span>Menu Hari
+        Ini
+      </div>
+      <h1>Kopi Kita <span>☕</span></h1>
+      <p class="hero-sub">
+        Nikmati kopi pilihan terbaik, pesan sekarang lewat WhatsApp
+      </p>
+    </div>
 
-    <div class="map">
+    <!-- PRODUCTS -->
+    <div class="section-wrap">
+      <div class="stag">Menu</div>
+      <div class="stitle">Pilih Kopimu</div>
+      <div class="pgrid" id="produk"></div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- MAP -->
+    <div class="section-wrap">
+      <div class="stag">Lokasi</div>
+      <div class="stitle">Temukan Kami</div>
       <div class="map-card">
-        <div class="map-header">📍 Lokasi Toko - Sigli</div>
+        <div class="map-header">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path d="M8 2a4 4 0 00-4 4c0 3 4 8 4 8s4-5 4-8a4 4 0 00-4-4z" />
+            <circle cx="8" cy="6" r="1.5" />
+          </svg>
+          <span>Lokasi Toko</span> — Sigli, Aceh
+        </div>
         <iframe
           src="https://maps.google.com/maps?q=sigli%20aceh&output=embed"
+          loading="lazy"
         ></iframe>
         <div class="map-footer">
+          <p>Jl. Sigli, Kabupaten Pidie, Aceh</p>
           <button class="map-btn" onclick="bukaMaps()">
-            Buka di Google Maps
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path
+                d="M9 2h5v5M14 2L8 8M6 4H3a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1v-3"
+              />
+            </svg>
+            Buka Maps
           </button>
         </div>
       </div>
     </div>
 
-    <div class="cart-toggle" onclick="toggleCart()">🛒</div>
+    <footer>Dibuat oleh <em>Muksalmina Adami</em> &mdash; 2026</footer>
+
+    <!-- OVERLAY -->
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
+    <!-- CART PANEL -->
     <div class="cart-panel" id="cartPanel">
       <div class="cart-header">
-        <span>Keranjang Kamu</span>
-        <button class="close-btn" onclick="toggleCart()">✖</button>
+        <div class="cart-header-left">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="cart-title">Keranjang Kamu</span>
+        </div>
+        <button class="close-btn" onclick="toggleCart()">✕</button>
       </div>
       <div class="cart-items" id="cartItems"></div>
-      <div class="total-box" id="total"></div>
-      <button class="checkout" onclick="checkout()">Checkout WhatsApp</button>
+      <div class="cart-footer">
+        <div class="total-box">
+          <span class="total-label">Total Pembayaran</span>
+          <span class="total-val" id="totalVal">Rp0</span>
+        </div>
+        <button class="checkout" onclick="checkout()">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+            />
+            <path
+              d="M13 1C6.373 1 1 6.373 1 13s5.373 12 12 12 12-5.373 12-12S19.627 1 13 1zm0 21.75C7.063 22.75 2.25 17.937 2.25 12S7.063 1.25 13 1.25 23.75 6.063 23.75 12 18.937 22.75 13 22.75z"
+            />
+          </svg>
+          Checkout via WhatsApp
+        </button>
+      </div>
     </div>
 
-    <div class="toast" id="toast">Ditambahkan ke keranjang</div>
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+      <span class="toast-dot"></span>
+      Ditambahkan ke keranjang
+    </div>
 
     <script>
       const produkList = [
@@ -379,7 +975,7 @@
       function showToast() {
         const t = document.getElementById("toast");
         t.classList.add("show");
-        setTimeout(() => t.classList.remove("show"), 1200);
+        setTimeout(() => t.classList.remove("show"), 1500);
       }
 
       function toggleCart() {
@@ -391,48 +987,58 @@
         window.open("https://www.google.com/maps?q=sigli+aceh");
       }
 
-      function animateToCart(button) {
-        const cartIcon = document.querySelector(".cart-toggle");
-        const img = button.closest(".card").querySelector("img");
+      function updateBadge() {
+        const total = cart.reduce((s, i) => s + i.qty, 0);
+        const badge = document.getElementById("badge");
+        badge.style.display = total > 0 ? "flex" : "none";
+        badge.textContent = total;
+      }
 
+      function animateToCart(button) {
+        const cartIcon = document.querySelector(".cart-badge-wrap");
+        const img = button.closest(".pcard").querySelector("img");
         const clone = img.cloneNode(true);
         const rect = img.getBoundingClientRect();
         const cartRect = cartIcon.getBoundingClientRect();
 
-        clone.style.position = "fixed";
-        clone.style.left = rect.left + "px";
-        clone.style.top = rect.top + "px";
-        clone.style.width = rect.width + "px";
-        clone.style.height = rect.height + "px";
-        clone.style.zIndex = 9999;
-        clone.style.transition = "all 0.7s ease";
-
+        clone.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;z-index:9999;transition:all 0.65s cubic-bezier(0.4,0,0.2,1);border-radius:8px;object-fit:cover;pointer-events:none;`;
         document.body.appendChild(clone);
-
         setTimeout(() => {
-          clone.style.left = cartRect.left + "px";
-          clone.style.top = cartRect.top + "px";
+          clone.style.left = cartRect.left + cartRect.width / 2 - 10 + "px";
+          clone.style.top = cartRect.top + cartRect.height / 2 - 10 + "px";
           clone.style.width = "20px";
           clone.style.height = "20px";
-          clone.style.opacity = "0.3";
+          clone.style.opacity = "0";
+          clone.style.borderRadius = "50%";
         }, 10);
-
-        setTimeout(() => clone.remove(), 700);
+        setTimeout(() => clone.remove(), 680);
       }
 
       function renderProduk() {
         const el = document.getElementById("produk");
         el.innerHTML = "";
         produkList.forEach((p) => {
-          el.innerHTML += `
-    <div class="card">
-      <img src="${p.img}" onerror="this.src='https://picsum.photos/400/300?coffee'">
-      <div class="card-content">
-        <h3>${p.nama}</h3>
-        <p class="price">Rp${formatRupiah(p.harga)}</p>
-        <button class="add-btn" onclick="tambah('${p.nama}',${p.harga}); animateToCart(this)">Tambah</button>
-      </div>
-    </div>`;
+          const card = document.createElement("div");
+          card.className = "pcard";
+          card.innerHTML = `
+            <div class="pthumb">
+              <img src="${p.img}" alt="${p.nama}" onerror="this.src='https://picsum.photos/400/300'">
+            </div>
+            <div class="pbody">
+              <div class="pname">${p.nama}</div>
+              <div class="pprice">Rp${formatRupiah(p.harga)}</div>
+              <button class="add-btn">+ Tambah</button>
+            </div>`;
+          card.querySelector(".add-btn").addEventListener("click", function () {
+            tambah(p.nama, p.harga);
+            animateToCart(this);
+          });
+          card.addEventListener("mousemove", (e) => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty("--mx", e.clientX - r.left + "px");
+            card.style.setProperty("--my", e.clientY - r.top + "px");
+          });
+          el.appendChild(card);
         });
       }
 
@@ -441,53 +1047,61 @@
         el.innerHTML = "";
 
         if (cart.length === 0) {
-          el.innerHTML = '<div class="empty">Keranjang kosong ☕</div>';
-          document.getElementById("total").innerText = "Total: Rp0";
+          el.innerHTML = `<div class="empty-cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span>Keranjang masih kosong</span>
+          </div>`;
+          document.getElementById("totalVal").textContent = "Rp0";
+          updateBadge();
           return;
         }
 
         cart.forEach((item, i) => {
-          el.innerHTML += `
-    <div class="cart-item">
-      <div>
-        <div>${item.nama}</div>
-        <div style="font-size:12px;color:#777">Rp${formatRupiah(item.harga * item.qty)}</div>
-      </div>
-      <div class="controls">
-        <button class="qty-btn" onclick="kurang(${i})">-</button>
-        ${item.qty}
-        <button class="qty-btn" onclick="tambahQty(${i})">+</button>
-        <button class="delete-btn" onclick="hapus(${i})">🗑️</button>
-      </div>
-    </div>`;
+          const div = document.createElement("div");
+          div.className = "cart-item";
+          div.innerHTML = `
+            <div>
+              <div class="ci-name">${item.nama}</div>
+              <div class="ci-price">Rp${formatRupiah(item.harga * item.qty)}</div>
+            </div>
+            <div class="controls">
+              <button class="qty-btn" data-action="minus" data-idx="${i}">−</button>
+              <span class="qty-num">${item.qty}</span>
+              <button class="qty-btn" data-action="plus" data-idx="${i}">+</button>
+              <button class="delete-btn" data-action="del" data-idx="${i}">✕</button>
+            </div>`;
+          el.appendChild(div);
+        });
+
+        el.querySelectorAll("button[data-action]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const idx = +btn.dataset.idx;
+            if (btn.dataset.action === "minus") kurang(idx);
+            else if (btn.dataset.action === "plus") tambahQty(idx);
+            else hapus(idx);
+          });
         });
 
         let total = cart.reduce((s, i) => s + i.harga * i.qty, 0);
-        document.getElementById("total").innerText =
-          "Total: Rp" + formatRupiah(total);
+        document.getElementById("totalVal").textContent =
+          "Rp" + formatRupiah(total);
+        updateBadge();
       }
 
       function tambah(n, h) {
         let item = cart.find((i) => i.nama === n);
-        if (item) {
-          item.qty++;
-        } else {
-          cart.push({ nama: n, harga: h, qty: 1 });
-        }
+        if (item) item.qty++;
+        else cart.push({ nama: n, harga: h, qty: 1 });
         renderCart();
         showToast();
       }
-
       function tambahQty(i) {
         cart[i].qty++;
         renderCart();
       }
       function kurang(i) {
-        if (cart[i].qty > 1) {
-          cart[i].qty--;
-        } else {
-          hapus(i);
-        }
+        if (cart[i].qty > 1) cart[i].qty--;
+        else hapus(i);
         renderCart();
       }
       function hapus(i) {
@@ -497,7 +1111,7 @@
 
       function checkout() {
         if (cart.length === 0) {
-          alert("Keranjang kosong");
+          alert("Keranjang kosong!");
           return;
         }
         let pesan = "Halo saya ingin pesan:%0A";
