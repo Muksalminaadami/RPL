@@ -59,9 +59,6 @@
   }
   @keyframes mf{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(3%,4%) scale(1.07)}}
 
-  /* ══════════════════════════════════════════
-     NAVBAR — overflow:visible agar dropdown mobile tidak terpotong
-  ══════════════════════════════════════════ */
   nav{
     position:fixed;top:0;left:0;
     width:100%;max-width:100vw;
@@ -123,10 +120,6 @@
   [data-theme="light"] .ti.sun{opacity:1}
   [data-theme="light"] .ti.moon{opacity:0}
 
-  /* ══════════════════════════════════════════
-     HAMBURGER BUTTON
-     display:none di desktop, display:flex di mobile
-  ══════════════════════════════════════════ */
   .hb{
     /* Default sembunyi di desktop */
     display:none;
@@ -166,13 +159,6 @@
     /* Tampilkan hamburger */
     .hb{display:flex !important}
 
-    /* ── DROPDOWN MENU ──
-       Key fixes:
-       1. z-index:500 > nav(300) agar tidak tertutup
-       2. visibility + pointer-events untuk toggle yang benar
-       3. transition delay visibility: 0s saat buka, delay saat tutup
-       4. TIDAK memakai overflow:hidden pada ancestor manapun
-    */
     .nav-links{
       position:fixed;
       top:62px;
