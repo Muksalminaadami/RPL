@@ -662,16 +662,6 @@ document.getElementById("tt").addEventListener("click",()=>{
   h.setAttribute("data-theme",h.getAttribute("data-theme")==="dark"?"light":"dark");
 });
 
-/* ══════════════════════════════════════════
-   HAMBURGER — fixed & bulletproof
-   Cara kerja:
-   1. Klik hb → toggle class "open" di hb dan navLinks
-   2. stopPropagation agar klik tidak langsung ditutup
-      oleh listener "klik di luar"
-   3. Klik di luar area nav → tutup menu
-   4. Klik link di dalam menu → tutup menu
-   5. Tekan Escape → tutup menu
-══════════════════════════════════════════ */
 const hb = document.getElementById("hb");
 const nl = document.getElementById("navLinks");
 
