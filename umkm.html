@@ -3,244 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Katalog UMKM Modern Relasional</title>
-<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet"/>
+<title>Katalog UMKM Modern Relasional - Multi Role</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;600;700&family=Cabinet+Grotesk:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-/* ══════════════════════════════════════
-   TOKENS & CORE STYLE (GLASSMORPHISM)
-══════════════════════════════════════ */
-:root {
-  --ease: cubic-bezier(.16,1,.3,1);
-}
+:root { --ease: cubic-bezier(.16,1,.3,1); }
 [data-theme="dark"] {
-  --bg: #060910; --bg2: #0a0f1a; --bg3: #0e1625; --card: #0c1422; --card-hov: #111d31;
+  --bg: #060910; --bg2: #0a0f1a; --bg3: #0e1625; --card: #0c1422;
   --bdr: rgba(82,182,255,.1); --bdr2: rgba(82,182,255,.35); --tx: #dde9ff; --txm: #7a9cc0;
-  --txd: #3a5572; --ac: #38bdf8; --ac2: #818cf8; --glow: rgba(56,189,248,.14);
-  --pill-bg: rgba(56,189,248,.1); --pill-tx: #7dd3fc; --sh: 0 20px 60px rgba(0,0,0,.6); --nav: rgba(6,9,16,.88);
+  --ac: #38bdf8; --ac2: #818cf8; --sh: 0 20px 60px rgba(0,0,0,.6); --nav: rgba(6,9,16,.88);
 }
 [data-theme="light"] {
-  --bg: #f5f8ff; --bg2: #eaf1fb; --bg3: #dce8f8; --card: #ffffff; --card-hov: #f0f7ff;
+  --bg: #f5f8ff; --bg2: #eaf1fb; --bg3: #dce8f8; --card: #ffffff;
   --bdr: rgba(37,99,180,.1); --bdr2: rgba(37,99,180,.35); --tx: #0d1b2e; --txm: #3a5c82;
-  --txd: #8db0d0; --ac: #0284c7; --ac2: #6366f1; --glow: rgba(2,132,199,.1);
-  --pill-bg: rgba(2,132,199,.08); --pill-tx: #0369a1; --sh: 0 20px 60px rgba(0,50,120,.1); --nav: rgba(245,248,255,.92);
+  --ac: #0284c7; --ac2: #6366f1; --sh: 0 20px 60px rgba(0,50,120,.1); --nav: rgba(245,248,255,.92);
 }
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
-body { font-family:"Cabinet Grotesk", sans-serif; background:var(--bg); color:var(--tx); min-height:100vh; transition:background .5s,color .5s; overflow-x:clip; }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:"Cabinet Grotesk", sans-serif; background:var(--bg); color:var(--tx); min-height:100vh; transition:background .5s,color .5s; }
 
-/* NAVBAR */
 header {
-  position:fixed; top:0; left:0; width:100%; z-index:500; height:64px; padding:0 clamp(16px,4vw,52px);
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  background:var(--nav); backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px); border-bottom:1px solid var(--bdr);
+  position:fixed; top:0; left:0; width:100%; z-index:500; height:64px; padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--nav); backdrop-filter:blur(28px); border-bottom:1px solid var(--bdr);
 }
-.nav-logo { font-family:"Clash Display",sans-serif; font-weight:700; font-size:1.15rem; color:var(--tx); text-decoration:none; display:flex; align-items:center; gap:9px; }
-.logo-icon { width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg,var(--ac),var(--ac2)); display:flex; align-items:center; justify-content:center; }
+.nav-logo { font-family:"Clash Display",sans-serif; font-weight:700; color:var(--tx); text-decoration:none; }
 .nav-controls { display:flex; align-items:center; gap:10px; }
-#search, #kategori { padding:9px 14px; background:var(--bg3); color:var(--tx); border:1px solid var(--bdr); border-radius:10px; font-family:inherit; outline:none; font-size:.875rem; }
-#search { width:200px; transition:width .35s var(--ease); }
-#search:focus { width:260px; border-color:var(--ac); }
-.tt { width:42px; height:23px; background:var(--bg3); border:1px solid var(--bdr); border-radius:50px; cursor:pointer; position:relative; }
-.tt::before { content:""; position:absolute; top:3px; left:3px; width:15px; height:15px; background:var(--ac); border-radius:50%; transition:transform .3s; }
-[data-theme="light"] .tt::before { transform:translateX(19px) }
+#search, #kategori { padding:8px 12px; background:var(--bg3); color:var(--tx); border:1px solid var(--bdr); border-radius:8px; outline:none; }
 
-/* HERO & STATS */
-.hero { text-align:center; max-width:760px; margin:110px auto 40px; padding:0 20px; }
-.hero h1 { font-family:"Clash Display",sans-serif; font-size:clamp(2.2rem,6vw,3.8rem); font-weight:700; letter-spacing:-.04em; line-height:1.1; }
+.hero { text-align:center; max-width:760px; margin:100px auto 30px; padding:0 20px; }
+.hero h1 { font-family:"Clash Display",sans-serif; font-size:2.5rem; }
 .hero h1 span { background:linear-gradient(135deg,var(--ac),var(--ac2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-.grid-wrap { max-width:1320px; margin:0 auto; padding:0 clamp(16px,4vw,48px) 60px; }
-.stats-row { display:flex; gap:16px; margin-bottom:32px; flex-wrap:wrap; }
-.stat-chip { flex:1; min-width:160px; padding:16px; background:var(--card); border:1px solid var(--bdr); border-radius:14px; }
-.stat-chip .label { font-size:.7rem; font-weight:700; text-transform:uppercase; color:var(--txm); margin-bottom:4px; }
-.stat-chip .value { font-family:"Clash Display",sans-serif; font-size:1.5rem; font-weight:700; color:var(--ac); }
 
-/* GRID PRODUK */
-#produkContainer { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
-.card { background:var(--card); border:1px solid var(--bdr); border-radius:20px; overflow:hidden; display:flex; flex-direction:column; transition:all .4s var(--ease); cursor:pointer; }
-.card:hover { transform:translateY(-6px); border-color:var(--bdr2); box-shadow:var(--sh); }
-.card-img { height:160px; display:flex; justify-content:center; align-items:center; font-size:4rem; background:linear-gradient(145deg,var(--bg3),var(--bg2)); }
-.card-body { padding:16px; display:flex; flex-direction:column; flex:1; }
-.card-tag { font-size:.6rem; font-weight:800; text-transform:uppercase; color:var(--pill-tx); background:var(--pill-bg); padding:3px 8px; border-radius:5px; width:fit-content; margin-bottom:10px; }
-.card-name { font-family:"Clash Display",sans-serif; font-size:.95rem; font-weight:600; color:var(--tx); margin-bottom:12px; line-height:1.4; }
-.card-footer { display:flex; justify-content:between; align-items:center; margin-top:auto; gap:8px; justify-content:space-between; }
-.card-price { font-family:"Clash Display",sans-serif; font-size:1rem; font-weight:700; color:var(--ac); }
-.btn-detail { padding:6px 12px; background:var(--pill-bg); color:var(--ac); border:1px solid var(--bdr); border-radius:8px; font-size:.72rem; font-weight:700; cursor:pointer; }
+.grid-wrap { max-width:1200px; margin:0 auto; padding:0 24px 60px; }
+#produkContainer { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; }
+.card { background:var(--card); border:1px solid var(--bdr); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; position:relative; transition:all .3s ease; }
+.card:hover { transform:translateY(-5px); box-shadow:var(--sh); border-color:var(--bdr2); }
+.card-img { height:140px; display:flex; justify-content:center; align-items:center; font-size:3.5rem; background:var(--bg3); }
+.card-body { padding:16px; flex:1; display:flex; flex-direction:column; }
+.card-name { font-family:"Clash Display",sans-serif; font-size:.95rem; font-weight:600; margin-bottom:10px; }
+.card-price { color:var(--ac); font-weight:700; }
+.btn-del { position:absolute; top:10px; right:10px; background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:6px; cursor:pointer; display:none; }
 
-/* MODAL OVERLAY */
-.modal-overlay { display:none; position:fixed; inset:0; z-index:800; background:rgba(6,9,16,.8); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:16px; }
+/* PANEL LOGIN */
+.auth-bar { background:var(--bg2); padding:10px 24px; margin-top:64px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--bdr); }
+.btn-action { padding:6px 12px; background:var(--ac); color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:700; }
+
+/* MODAL FORM */
+.modal-overlay { display:none; position:fixed; inset:0; z-index:800; background:rgba(0,0,0,.7); backdrop-filter:blur(5px); align-items:center; justify-content:center; }
 .modal-overlay.active { display:flex; }
-.modal-box { width:100%; max-width:500px; background:var(--card); border:1px solid var(--bdr2); border-radius:24px; position:relative; overflow:hidden; animation:mUp .4s var(--ease); }
-@keyframes mUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-.m-close { position:absolute; top:12px; right:12px; width:32px; height:32px; background:var(--bg3); border:1px solid var(--bdr); color:var(--tx); border-radius:8px; cursor:pointer; }
-.m-hero { height:180px; display:flex; align-items:center; justify-content:center; font-size:6rem; background:linear-gradient(145deg,var(--bg3),var(--bg2)); border-bottom:1px solid var(--bdr); }
-.m-body { padding:20px; }
-.m-name { font-family:"Clash Display",sans-serif; font-size:1.4rem; font-weight:700; margin-bottom:10px; }
-.m-price { font-family:"Clash Display",sans-serif; font-size:1.3rem; font-weight:700; color:var(--ac); margin-bottom:16px; }
-.m-info { font-size:.85rem; color:var(--txm); margin-bottom:6px; border-bottom:1px solid var(--bdr); padding-bottom:6px; }
-.m-info strong { color:var(--tx); }
-.m-desc { font-size:.875rem; color:var(--txm); line-height:1.6; margin-top:10px; }
-.btn-wa { display:block; text-align:center; background:#22c55e; color:#fff; text-decoration:none; padding:12px; margin:16px 20px 20px; border-radius:12px; font-family:"Clash Display",sans-serif; font-weight:700; font-size:.9rem; }
-
-/* UTILS */
-.empty-state { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--txm); }
-#pageLoader { position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; align-items:center; justify-content:center; font-family:"Clash Display",sans-serif; font-size:1.5rem; font-weight:700; color:var(--ac); transition:opacity .5s; }
-#pageLoader.done { opacity:0; pointer-events:none; }
+.modal-box { width:90%; max-width:400px; background:var(--card); padding:24px; border-radius:16px; border:1px solid var(--bdr2); }
+.form-group { margin-bottom:12px; }
+.form-group label { display:block; font-size:.8rem; margin-bottom:4px; color:var(--txm); }
+.form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; background:var(--bg3); color:var(--tx); border:1px solid var(--bdr); border-radius:6px; outline:none; }
 </style>
 </head>
 <body>
 
-<div id="pageLoader">🏪 MEMUAT DATABASE RELASIONAL...</div>
-
-<header id="mainHeader">
-  <a class="nav-logo" href="#">
-    <div class="logo-icon">🏪</div>&nbsp;Katalog <span>UMKM 3.0</span>
-  </a>
+<header>
+  <a class="nav-logo" href="#">🏪 Catalog<span>UMKM MultiRole</span></a>
   <div class="nav-controls">
-    <input type="text" id="search" placeholder="Cari nama produk...">
-    <select id="kategori">
-      <option value="">Semua Kategori</option>
-    </select>
-    <button class="tt" id="tt"></button>
+    <input type="text" id="search" placeholder="Cari produk...">
+    <select id="kategori"><option value="">Semua</option></select>
   </div>
 </header>
 
-<section class="hero">
-  <h1>Sistem Hub Data <span>Multi-Tabel</span></h1>
-  <p style="color:var(--txm); margin-top:10px;">Data produk di-join dinamis dari Tb_produk, Tb_kategori, dan Tb_kontak secara real-time.</p>
-</section>
-
-<div class="grid-wrap">
-  <div class="stats-row" id="statsRow" style="display:none">
-    <div class="stat-chip"><div class="label">Total Item</div><div class="value" id="statTotal">—</div></div>
-    <div class="stat-chip"><div class="label">Total Kategori</div><div class="value" id="statKat">—</div></div>
-    <div class="stat-chip"><div class="label">Harga Minimum</div><div class="value" id="statMin">—</div></div>
-  </div>
-
-  <div id="produkContainer">
-    <div class="empty-state">Sedang sinkronisasi API data...</div>
+<div class="auth-bar">
+  <div id="userGreeting">Status: Pengunjung Umum</div>
+  <div>
+    <button id="btnAuth" class="btn-action" onclick="bukaLogin()">Login Akun</button>
+    <button id="btnTambah" class="btn-action" style="display:none; background:#22c55e;" onclick="bukaFormProduk()">+ Tambah Produk</button>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal">
+<section class="hero">
+  <h1 id="welcomeTitle">Katalog UMKM <span>Pilihan Terbaik</span></h1>
+</section>
+
+<div class="grid-wrap">
+  <div id="produkContainer"></div>
+</div>
+
+<div class="modal-overlay" id="modalLogin">
   <div class="modal-box">
-    <button class="m-close" id="modalClose">✕</button>
-    <div class="m-hero" id="mGambar"></div>
-    <div class="m-body">
-      <div class="card-tag" id="mKategori" style="margin-bottom:6px;"></div>
-      <div class="m-name" id="mNama"></div>
-      <div class="m-price" id="mHarga"></div>
-      <div class="m-info"><strong>Stok Produk:</strong> <span id="mStok"></span></div>
-      <div class="m-info"><strong>Owner/Toko:</strong> <span id="mOwner"></span></div>
-      <div class="m-desc" id="mDeskripsi"></div>
+    <h3 style="margin-bottom:16px;">Login Multi-Role</h3>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="logUser" placeholder="Masukkan username">
     </div>
-    <a id="mWa" class="btn-wa" target="_blank">💬 Hubungi Via WhatsApp Terelasi</a>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="logPass" placeholder="Masukkan password">
+    </div>
+    <button class="btn-action" style="width:100%; margin-top:10px;" onclick="prosesLogin()">Masuk</button>
+    <button class="btn-action" style="width:100%; margin-top:6px; background:transparent; border:1px solid var(--bdr);" onclick="tutupModal('modalLogin')">Batal</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalProduk">
+  <div class="modal-box">
+    <h3 style="margin-bottom:16px;">Tambah Produk Baru (Admin)</h3>
+    <div class="form-group"><label>Nama Produk</label><input type="text" id="pNama"></div>
+    <div class="form-group"><label>Harga (Angka)</label><input type="number" id="pHarga"></div>
+    <div class="form-group"><label>Deskripsi</label><textarea id="pDesk"></textarea></div>
+    <div class="form-group"><label>Emoji Gambar</label><input type="text" id="pImg" placeholder="🍿"></div>
+    <div class="form-group">
+      <label>Kategori</label>
+      <select id="pKat"><option value="K01">Kuliner & Camilan</option><option value="K02">Fashion & Kerajinan</option><option value="K03">Kesehatan & Herbal</option></select>
+    </div>
+    <div class="form-group"><label>Stok</label><input type="number" id="pStok" value="10"></div>
+    <div class="form-group">
+      <label>Kontak Hubung</label>
+      <select id="pKon"><option value="C01">Dapur Kuliner Nusantara</option><option value="C02">Rumah Kreatif & Konveksi</option><option value="C03">Pondok Herbal Alami</option></select>
+    </div>
+    <button class="btn-action" style="width:100%; background:#22c55e;" onclick="prosesTambahProduk()">Simpan ke Cloud</button>
+    <button class="btn-action" style="width:100%; margin-top:6px; background:transparent; border:1px solid var(--bdr);" onclick="tutupModal('modalProduk')">Batal</button>
   </div>
 </div>
 
 <script>
-window.addEventListener("load", () => {
-  setTimeout(() => document.getElementById("pageLoader").classList.add("done"), 800);
-});
+// ⚠️ PASTE URL WEB APP /EXEC KAMU DI SINI
+const API_URL = "URL_DEPLOYMENT_BARU_KAMU_DI_SINI";
 
-document.getElementById("tt").addEventListener("click", () => {
-  const h = document.documentElement;
-  h.setAttribute("data-theme", h.getAttribute("data-theme") === "dark" ? "light" : "dark");
-});
+let listProduk = [];
+let userLogin = null;
 
-// ⚠️ GANTI STRING DI BAWAH INI DENGAN URL DEPLOYMENT APPS SCRIPT BARU KAMU YANG BERAKHIRAN /exec
-const API_URL = "https://script.google.com/macros/s/AKfycbwDG4N0i2jSCG77a4hgaNNGPVUkyc4-lMqZfdfcpTeqnHKTvZ4bd1pcHBys_2w-a2ItJA/exec";
-
-let produkData = [];
-
-async function loadProduk() {
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-    produkData = Array.isArray(data) ? data : [];
-    renderProduk(produkData);
-    loadKategoriDropdown(produkData);
-    updateStats(produkData);
-  } catch (err) {
-    document.getElementById("produkContainer").innerHTML = 
-      `<div class="empty-state">⚠️ Gagal mengambil relasi data. Periksa kembali Deployment Web App di Google Sheet Anda.</div>`;
-  }
+async function loadData() {
+  const res = await fetch(API_URL);
+  listProduk = await res.json();
+  renderKatalog(listProduk);
+  loadDropdown();
 }
 
-function renderProduk(data) {
+function renderKatalog(data) {
   const container = document.getElementById("produkContainer");
   container.innerHTML = "";
-  
-  if (data.length === 0) {
-    container.innerHTML = `<div class="empty-state">Tidak ada data produk yang cocok.</div>`;
-    return;
-  }
-
   data.forEach(item => {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
+      <button class="btn-del" style="display:${userLogin && userLogin.role === 'admin' ? 'block' : 'none'}" onclick="hapusProduk('${item.id}', event)">✕</button>
       <div class="card-img">${item.gambar}</div>
       <div class="card-body">
-        <div class="card-tag">${item.kategori}</div>
+        <span style="font-size:0.7rem; color:var(--ac)">${item.kategori}</span>
         <div class="card-name">${item.nama_produk}</div>
-        <div class="card-footer">
-          <div class="card-price">Rp ${Number(item.harga).toLocaleString('id-ID')}</div>
-          <button class="btn-detail">Lihat →</button>
-        </div>
+        <div class="card-price">Rp ${item.harga.toLocaleString('id-ID')}</div>
+        <p style="font-size:0.8rem; color:var(--txm); margin-top:6px;">${item.deskripsi}</p>
+        <a href="https://wa.me/${item.kontak}" target="_blank" style="margin-top:auto; padding:6px; text-align:center; background:#22c55e; color:#fff; text-decoration:none; border-radius:6px; font-size:0.8rem; font-weight:700;">Order Via WA</a>
       </div>
     `;
-    card.addEventListener("click", () => bukaDetail(item));
     container.appendChild(card);
   });
 }
 
-function loadKategoriDropdown(data) {
+function loadDropdown() {
   const sel = document.getElementById("kategori");
-  sel.innerHTML = `<option value="">Semua Kategori</option>`;
-  const listUnik = [...new Set(data.map(x => x.kategori))];
-  listUnik.forEach(kat => sel.innerHTML += `<option value="${kat}">${kat}</option>`);
+  sel.innerHTML = `<option value="">Semua</option>`;
+  const kats = [...new Set(listProduk.map(x => x.kategori))];
+  kats.forEach(k => sel.innerHTML += `<option value="${k}">${k}</option>`);
 }
 
-function updateStats(data) {
-  if(data.length === 0) return;
-  document.getElementById("statsRow").style.display = "flex";
-  document.getElementById("statTotal").textContent = data.length;
-  document.getElementById("statKat").textContent = [...new Set(data.map(x => x.kategori))].length;
-  const listHarga = data.map(x => Number(x.harga)).filter(p => p > 0);
-  const min = listHarga.length > 0 ? Math.min(...listHarga) : 0;
-  document.getElementById("statMin").textContent = "Rp " + min.toLocaleString('id-ID');
-}
-
-function filterData() {
+function filter() {
   const kw = document.getElementById("search").value.toLowerCase();
   const kat = document.getElementById("kategori").value;
-  const hasil = produkData.filter(item => 
-    item.nama_produk.toLowerCase().includes(kw) && (kat === "" || item.kategori === kat)
-  );
-  renderProduk(hasil);
+  const filtered = listProduk.filter(x => x.nama_produk.toLowerCase().includes(kw) && (kat === "" || x.kategori === kat));
+  renderKatalog(filtered);
 }
-document.getElementById("search").addEventListener("keyup", filterData);
-document.getElementById("kategori").addEventListener("change", filterData);
+document.getElementById("search").addEventListener("input", filter);
+document.getElementById("kategori").addEventListener("change", filter);
 
-function bukaDetail(item) {
-  document.getElementById("mGambar").textContent = item.gambar;
-  document.getElementById("mKategori").textContent = item.kategori;
-  document.getElementById("mNama").textContent = item.nama_produk;
-  document.getElementById("mHarga").textContent = "Rp " + Number(item.harga).toLocaleString('id-ID');
-  document.getElementById("mStok").textContent = item.stok;
-  document.getElementById("mOwner").textContent = item.nama_pemilik || "Admin Toko";
-  document.getElementById("mDeskripsi").textContent = item.deskripsi;
-  document.getElementById("mWa").href = "https://wa.me/" + item.kontak;
+// AUTH MANAGEMENT
+function bukaLogin() {
+  if(userLogin) {
+    userLogin = null;
+    document.getElementById("btnAuth").textContent = "Login Akun";
+    document.getElementById("userGreeting").textContent = "Status: Pengunjung Umum";
+    document.getElementById("welcomeTitle").innerHTML = "Katalog UMKM <span>Pilihan Terbaik</span>";
+    document.getElementById("btnTambah").style.display = "none";
+    renderKatalog(listProduk);
+  } else {
+    document.getElementById("modalLogin").classList.add("active");
+  }
+}
+
+async function prosesLogin() {
+  const u = document.getElementById("logUser").value;
+  const p = document.getElementById("logPass").value;
   
-  document.getElementById("modal").classList.add("active");
+  const res = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "login", username: u, password: p })
+  });
+  const hasil = await res.json();
+  
+  if(hasil.status) {
+    userLogin = hasil;
+    tutupModal('modalLogin');
+    document.getElementById("btnAuth").textContent = "Logout";
+    document.getElementById("userGreeting").textContent = `Halo, ${hasil.nama} (${hasil.role.toUpperCase()})`;
+    
+    if(hasil.role === 'admin') {
+      document.getElementById("welcomeTitle").innerHTML = "Dashboard <span>Manajemen Admin Utama</span>";
+      document.getElementById("btnTambah").style.display = "inline-block";
+    } else {
+      document.getElementById("welcomeTitle").innerHTML = `Selamat Berbelanja, <span>${hasil.nama}</span>`;
+    }
+    renderKatalog(listProduk);
+  } else {
+    alert(hasil.message);
+  }
 }
 
-function tutupModal() {
-  document.getElementById("modal").classList.remove("active");
+async function prosesTambahProduk() {
+  const data = {
+    nama_produk: document.getElementById("pNama").value,
+    harga: document.getElementById("pHarga").value,
+    deskripsi: document.getElementById("pDesk").value,
+    gambar: document.getElementById("pImg").value || "📦",
+    id_kategori: document.getElementById("pKat").value,
+    stok: document.getElementById("pStok").value,
+    id_kontak: document.getElementById("pKon").value
+  };
+  
+  await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "add", data: data }) });
+  tutupModal('modalProduk');
+  loadData();
 }
-document.getElementById("modalClose").addEventListener("click", tutupModal);
-document.getElementById("modal").addEventListener("click", e => { if(e.target.id === "modal") tutupModal(); });
 
-loadProduk();
+async function hapusProduk(id, event) {
+  event.stopPropagation();
+  if(confirm("Hapus produk ini dari database relasional cloud?")) {
+    await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "delete", id: id }) });
+    loadData();
+  }
+}
+
+function bukaFormProduk() { document.getElementById("modalProduk").classList.add("active"); }
+function tutupModal(id) { document.getElementById(id).classList.remove("active"); }
+
+loadData();
 </script>
 </body>
 </html>
