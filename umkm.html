@@ -3,762 +3,180 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Katalog Produk UMKM</title>
+<title>Katalog UMKM Modern Relasional</title>
 <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet"/>
 <style>
 /* ══════════════════════════════════════
-   TOKENS
+   TOKENS & CORE STYLE (GLASSMORPHISM)
 ══════════════════════════════════════ */
 :root {
   --ease: cubic-bezier(.16,1,.3,1);
-  --tr: .45s var(--ease);
-  --tr-fast: .22s var(--ease);
 }
-
 [data-theme="dark"] {
-  --bg:        #060910;
-  --bg2:       #0a0f1a;
-  --bg3:       #0e1625;
-  --card:      #0c1422;
-  --card-hov:  #111d31;
-  --glass:     rgba(12,20,34,.72);
-  --bdr:       rgba(82,182,255,.1);
-  --bdr2:      rgba(82,182,255,.35);
-  --tx:        #dde9ff;
-  --txm:       #7a9cc0;
-  --txd:       #3a5572;
-  --ac:        #38bdf8;
-  --ac2:       #818cf8;
-  --glow:      rgba(56,189,248,.14);
-  --glow2:     rgba(56,189,248,.06);
-  --pill-bg:   rgba(56,189,248,.1);
-  --pill-tx:   #7dd3fc;
-  --sh:        0 20px 60px rgba(0,0,0,.6);
-  --nav:       rgba(6,9,16,.88);
+  --bg: #060910; --bg2: #0a0f1a; --bg3: #0e1625; --card: #0c1422; --card-hov: #111d31;
+  --bdr: rgba(82,182,255,.1); --bdr2: rgba(82,182,255,.35); --tx: #dde9ff; --txm: #7a9cc0;
+  --txd: #3a5572; --ac: #38bdf8; --ac2: #818cf8; --glow: rgba(56,189,248,.14);
+  --pill-bg: rgba(56,189,248,.1); --pill-tx: #7dd3fc; --sh: 0 20px 60px rgba(0,0,0,.6); --nav: rgba(6,9,16,.88);
 }
 [data-theme="light"] {
-  --bg:        #f5f8ff;
-  --bg2:       #eaf1fb;
-  --bg3:       #dce8f8;
-  --card:      #ffffff;
-  --card-hov:  #f0f7ff;
-  --glass:     rgba(255,255,255,.78);
-  --bdr:       rgba(37,99,180,.1);
-  --bdr2:      rgba(37,99,180,.35);
-  --tx:        #0d1b2e;
-  --txm:       #3a5c82;
-  --txd:       #8db0d0;
-  --ac:        #0284c7;
-  --ac2:       #6366f1;
-  --glow:      rgba(2,132,199,.1);
-  --glow2:     rgba(2,132,199,.05);
-  --pill-bg:   rgba(2,132,199,.08);
-  --pill-tx:   #0369a1;
-  --sh:        0 20px 60px rgba(0,50,120,.1);
-  --nav:       rgba(245,248,255,.92);
+  --bg: #f5f8ff; --bg2: #eaf1fb; --bg3: #dce8f8; --card: #ffffff; --card-hov: #f0f7ff;
+  --bdr: rgba(37,99,180,.1); --bdr2: rgba(37,99,180,.35); --tx: #0d1b2e; --txm: #3a5c82;
+  --txd: #8db0d0; --ac: #0284c7; --ac2: #6366f1; --glow: rgba(2,132,199,.1);
+  --pill-bg: rgba(2,132,199,.08); --pill-tx: #0369a1; --sh: 0 20px 60px rgba(0,50,120,.1); --nav: rgba(245,248,255,.92);
 }
-
-/* ══════════════════════════════════════
-   RESET + BASE
-══════════════════════════════════════ */
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
-html { scroll-behavior:smooth; overflow-x:clip; font-size:16px }
-body {
-  font-family:"Cabinet Grotesk", sans-serif;
-  background:var(--bg); color:var(--tx);
-  min-height:100vh; overflow-x:clip;
-  transition:background .5s,color .5s;
-  cursor:none;
-}
-@media(max-width:768px){ body{ cursor:auto } }
+body { font-family:"Cabinet Grotesk", sans-serif; background:var(--bg); color:var(--tx); min-height:100vh; transition:background .5s,color .5s; overflow-x:clip; }
 
-/* ══════════════════════════════════════
-   CURSOR
-══════════════════════════════════════ */
-#cur,#cur-ring {
-  position:fixed; border-radius:50%;
-  pointer-events:none; z-index:9998;
-  transform:translate(-50%,-50%);
-}
-#cur {
-  width:9px; height:9px;
-  background:var(--ac); mix-blend-mode:screen;
-  transition:width .16s,height .16s,background .3s;
-}
-#cur-ring {
-  width:38px; height:38px;
-  border:1.5px solid var(--ac); opacity:.4;
-  transition:width .3s,height .3s,opacity .3s,border-color .3s;
-}
-.cur-hov #cur  { width:18px; height:18px }
-.cur-hov #cur-ring { width:56px; height:56px; opacity:.2 }
-@media(max-width:768px){ #cur,#cur-ring{ display:none } }
-
-/* ══════════════════════════════════════
-   BG ORBS + NOISE
-══════════════════════════════════════ */
-.bg-canvas { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden }
-.orb {
-  position:absolute; border-radius:50%;
-  filter:blur(80px); opacity:.55;
-  animation:orb-drift 20s ease-in-out infinite;
-}
-.orb1 { width:500px; height:500px; background:radial-gradient(var(--glow),transparent 70%); top:-10%; right:-5%; animation-duration:18s }
-.orb2 { width:380px; height:380px; background:radial-gradient(rgba(129,140,248,.08),transparent 70%); bottom:5%; left:-8%; animation-duration:24s; animation-delay:-8s }
-.orb3 { width:280px; height:280px; background:radial-gradient(var(--glow2),transparent 70%); top:40%; left:30%; animation-duration:30s; animation-delay:-14s }
-@keyframes orb-drift {
-  0%,100% { transform:translate(0,0) scale(1) }
-  33%      { transform:translate(2%,3%) scale(1.06) }
-  66%      { transform:translate(-1.5%,-2%) scale(.97) }
-}
-.bg-grid {
-  position:absolute; inset:0;
-  background-image:linear-gradient(var(--bdr) 1px,transparent 1px),linear-gradient(90deg,var(--bdr) 1px,transparent 1px);
-  background-size:40px 40px; opacity:.35;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 0%,black 0%,transparent 70%);
-}
-
-/* ══════════════════════════════════════
-   NAVBAR
-══════════════════════════════════════ */
+/* NAVBAR */
 header {
-  position:fixed; top:0; left:0; width:100%; z-index:500;
-  height:64px; padding:0 clamp(16px,4vw,52px);
+  position:fixed; top:0; left:0; width:100%; z-index:500; height:64px; padding:0 clamp(16px,4vw,52px);
   display:flex; align-items:center; justify-content:space-between; gap:12px;
-  background:var(--nav);
-  backdrop-filter:blur(28px) saturate(180%);
-  -webkit-backdrop-filter:blur(28px) saturate(180%);
-  border-bottom:1px solid var(--bdr);
-  transition:background .5s,border-color .5s;
+  background:var(--nav); backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px); border-bottom:1px solid var(--bdr);
 }
-
-.nav-logo {
-  font-family:"Clash Display",sans-serif;
-  font-weight:700; font-size:1.15rem;
-  color:var(--tx); letter-spacing:-.03em;
-  display:flex; align-items:center; gap:9px;
-  text-decoration:none; flex-shrink:0;
-}
-.logo-icon {
-  width:32px; height:32px; border-radius:9px;
-  background:linear-gradient(135deg,var(--ac),var(--ac2));
-  display:flex; align-items:center; justify-content:center;
-  font-size:1rem; box-shadow:0 0 18px var(--glow);
-  animation:logo-pulse 3s ease-in-out infinite;
-}
-@keyframes logo-pulse { 0%,100%{box-shadow:0 0 18px var(--glow)} 50%{box-shadow:0 0 32px var(--glow)} }
-.logo-text em { color:var(--ac); font-style:normal }
-
-.nav-controls {
-  display:flex; align-items:center; gap:10px; flex-wrap:nowrap;
-}
-
-.search-wrap {
-  position:relative;
-  display:flex; align-items:center;
-}
-.search-wrap .icon-search {
-  position:absolute; left:12px; font-size:.9rem; color:var(--txd);
-  pointer-events:none; transition:color .3s;
-}
-#search {
-  width:200px; padding:9px 14px 9px 36px;
-  background:var(--bg3); color:var(--tx);
-  border:1px solid var(--bdr); border-radius:10px;
-  font-family:"Cabinet Grotesk",sans-serif; font-size:.875rem;
-  transition:border-color .3s,box-shadow .3s,background .5s,width .35s var(--ease);
-  outline:none;
-}
-#search::placeholder { color:var(--txd) }
-#search:focus {
-  border-color:var(--ac); width:260px;
-  box-shadow:0 0 0 3px var(--glow2);
-}
-#search:focus ~ .icon-search,
-.search-wrap:focus-within .icon-search { color:var(--ac) }
-
-#kategori {
-  padding:9px 32px 9px 12px;
-  background:var(--bg3); color:var(--tx);
-  border:1px solid var(--bdr); border-radius:10px;
-  font-family:"Cabinet Grotesk",sans-serif; font-size:.875rem;
-  transition:border-color .3s,box-shadow .3s,background .5s;
-  outline:none; cursor:pointer; appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a7090' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat; background-position:right 10px center;
-}
-#kategori:focus { border-color:var(--ac); box-shadow:0 0 0 3px var(--glow2) }
-
-.tt {
-  width:42px; height:23px; background:var(--bg3);
-  border:1px solid var(--bdr); border-radius:50px;
-  cursor:pointer; position:relative; flex-shrink:0;
-  transition:background .5s,border-color .3s;
-}
-.tt::before {
-  content:""; position:absolute; top:3px; left:3px;
-  width:15px; height:15px; background:var(--ac); border-radius:50%;
-  transition:transform .4s var(--ease); box-shadow:0 0 10px var(--glow);
-}
+.nav-logo { font-family:"Clash Display",sans-serif; font-weight:700; font-size:1.15rem; color:var(--tx); text-decoration:none; display:flex; align-items:center; gap:9px; }
+.logo-icon { width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg,var(--ac),var(--ac2)); display:flex; align-items:center; justify-content:center; }
+.nav-controls { display:flex; align-items:center; gap:10px; }
+#search, #kategori { padding:9px 14px; background:var(--bg3); color:var(--tx); border:1px solid var(--bdr); border-radius:10px; font-family:inherit; outline:none; font-size:.875rem; }
+#search { width:200px; transition:width .35s var(--ease); }
+#search:focus { width:260px; border-color:var(--ac); }
+.tt { width:42px; height:23px; background:var(--bg3); border:1px solid var(--bdr); border-radius:50px; cursor:pointer; position:relative; }
+.tt::before { content:""; position:absolute; top:3px; left:3px; width:15px; height:15px; background:var(--ac); border-radius:50%; transition:transform .3s; }
 [data-theme="light"] .tt::before { transform:translateX(19px) }
-.tt:hover { border-color:var(--ac) }
 
-#produkCount {
-  font-size:.72rem; font-weight:700;
-  background:var(--pill-bg); color:var(--pill-tx);
-  padding:3px 9px; border-radius:20px;
-  letter-spacing:.04em; font-family:"Clash Display",sans-serif;
-  opacity:0; transition:opacity .3s;
-}
-#produkCount.visible { opacity:1 }
+/* HERO & STATS */
+.hero { text-align:center; max-width:760px; margin:110px auto 40px; padding:0 20px; }
+.hero h1 { font-family:"Clash Display",sans-serif; font-size:clamp(2.2rem,6vw,3.8rem); font-weight:700; letter-spacing:-.04em; line-height:1.1; }
+.hero h1 span { background:linear-gradient(135deg,var(--ac),var(--ac2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.grid-wrap { max-width:1320px; margin:0 auto; padding:0 clamp(16px,4vw,48px) 60px; }
+.stats-row { display:flex; gap:16px; margin-bottom:32px; flex-wrap:wrap; }
+.stat-chip { flex:1; min-width:160px; padding:16px; background:var(--card); border:1px solid var(--bdr); border-radius:14px; }
+.stat-chip .label { font-size:.7rem; font-weight:700; text-transform:uppercase; color:var(--txm); margin-bottom:4px; }
+.stat-chip .value { font-family:"Clash Display",sans-serif; font-size:1.5rem; font-weight:700; color:var(--ac); }
 
-.hb {
-  display:none;
-  flex-direction:column; justify-content:center; align-items:center;
-  gap:5px; cursor:pointer; width:38px; height:38px;
-  background:var(--bg3); border:1px solid var(--bdr); border-radius:9px;
-  flex-shrink:0; position:relative; z-index:1;
-  transition:background .3s,border-color .3s;
-}
-.hb span {
-  display:block; width:18px; height:2px;
-  background:var(--tx); border-radius:2px;
-  transition:transform .28s ease,opacity .2s ease; transform-origin:center;
-}
-.hb.open { border-color:var(--ac); background:var(--glow2) }
-.hb.open span:nth-child(1){ transform:translateY(7px) rotate(45deg) }
-.hb.open span:nth-child(2){ opacity:0; transform:scaleX(0) }
-.hb.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg) }
+/* GRID PRODUK */
+#produkContainer { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
+.card { background:var(--card); border:1px solid var(--bdr); border-radius:20px; overflow:hidden; display:flex; flex-direction:column; transition:all .4s var(--ease); cursor:pointer; }
+.card:hover { transform:translateY(-6px); border-color:var(--bdr2); box-shadow:var(--sh); }
+.card-img { height:160px; display:flex; justify-content:center; align-items:center; font-size:4rem; background:linear-gradient(145deg,var(--bg3),var(--bg2)); }
+.card-body { padding:16px; display:flex; flex-direction:column; flex:1; }
+.card-tag { font-size:.6rem; font-weight:800; text-transform:uppercase; color:var(--pill-tx); background:var(--pill-bg); padding:3px 8px; border-radius:5px; width:fit-content; margin-bottom:10px; }
+.card-name { font-family:"Clash Display",sans-serif; font-size:.95rem; font-weight:600; color:var(--tx); margin-bottom:12px; line-height:1.4; }
+.card-footer { display:flex; justify-content:between; align-items:center; margin-top:auto; gap:8px; justify-content:space-between; }
+.card-price { font-family:"Clash Display",sans-serif; font-size:1rem; font-weight:700; color:var(--ac); }
+.btn-detail { padding:6px 12px; background:var(--pill-bg); color:var(--ac); border:1px solid var(--bdr); border-radius:8px; font-size:.72rem; font-weight:700; cursor:pointer; }
 
-@media(max-width:768px){
-  .hb { display:flex !important }
-  .nav-controls {
-    position:fixed; top:64px; left:0;
-    width:100vw; z-index:499;
-    background:var(--nav);
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
-    border-bottom:1px solid var(--bdr);
-    flex-direction:column; align-items:stretch;
-    padding:18px 20px 22px; gap:12px;
-    transform:translateY(-8px); opacity:0;
-    visibility:hidden; pointer-events:none;
-    transition:transform .3s var(--ease),opacity .25s,visibility 0s .3s;
-  }
-  .nav-controls.open {
-    transform:translateY(0); opacity:1;
-    visibility:visible; pointer-events:auto;
-    transition:transform .3s var(--ease),opacity .25s,visibility 0s 0s;
-  }
-  #search { width:100% !important }
-  .search-wrap { flex:1 }
-  #search:focus { width:100% !important }
-  #kategori { width:100% }
-  .tt { align-self:flex-start }
-  #produkCount { align-self:flex-start }
-}
+/* MODAL OVERLAY */
+.modal-overlay { display:none; position:fixed; inset:0; z-index:800; background:rgba(6,9,16,.8); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:16px; }
+.modal-overlay.active { display:flex; }
+.modal-box { width:100%; max-width:500px; background:var(--card); border:1px solid var(--bdr2); border-radius:24px; position:relative; overflow:hidden; animation:mUp .4s var(--ease); }
+@keyframes mUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+.m-close { position:absolute; top:12px; right:12px; width:32px; height:32px; background:var(--bg3); border:1px solid var(--bdr); color:var(--tx); border-radius:8px; cursor:pointer; }
+.m-hero { height:180px; display:flex; align-items:center; justify-content:center; font-size:6rem; background:linear-gradient(145deg,var(--bg3),var(--bg2)); border-bottom:1px solid var(--bdr); }
+.m-body { padding:20px; }
+.m-name { font-family:"Clash Display",sans-serif; font-size:1.4rem; font-weight:700; margin-bottom:10px; }
+.m-price { font-family:"Clash Display",sans-serif; font-size:1.3rem; font-weight:700; color:var(--ac); margin-bottom:16px; }
+.m-info { font-size:.85rem; color:var(--txm); margin-bottom:6px; border-bottom:1px solid var(--bdr); padding-bottom:6px; }
+.m-info strong { color:var(--tx); }
+.m-desc { font-size:.875rem; color:var(--txm); line-height:1.6; margin-top:10px; }
+.btn-wa { display:block; text-align:center; background:#22c55e; color:#fff; text-decoration:none; padding:12px; margin:16px 20px 20px; border-radius:12px; font-family:"Clash Display",sans-serif; font-weight:700; font-size:.9rem; }
 
-/* ══════════════════════════════════════
-   HERO SECTION
-══════════════════════════════════════ */
-.hero {
-  position:relative; z-index:1;
-  margin-top:64px;
-  padding:clamp(52px,10vw,96px) clamp(20px,6vw,60px) clamp(32px,6vw,56px);
-  text-align:center; max-width:760px; margin-left:auto; margin-right:auto;
-  overflow:hidden;
-}
-.hero-eyebrow {
-  display:inline-flex; align-items:center; gap:7px;
-  font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--pill-tx); background:var(--pill-bg);
-  border:1px solid var(--bdr); border-radius:20px;
-  padding:5px 14px; margin-bottom:20px;
-  animation:fade-up .6s .1s var(--ease) both;
-}
-.hero-eyebrow::before {
-  content:""; width:6px; height:6px; border-radius:50%;
-  background:var(--ac); animation:ping 2s ease-in-out infinite;
-}
-@keyframes ping { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.7);opacity:.4} }
-
-.hero h1 {
-  font-family:"Clash Display",sans-serif;
-  font-size:clamp(2.4rem,7vw,4.2rem); font-weight:700;
-  line-height:1.05; letter-spacing:-.04em;
-  color:var(--tx);
-  animation:fade-up .65s .2s var(--ease) both;
-}
-.hero h1 .grad {
-  background:linear-gradient(135deg,var(--ac) 0%,var(--ac2) 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-.hero p {
-  margin-top:14px;
-  font-size:clamp(.9rem,2vw,1.05rem); color:var(--txm); line-height:1.7;
-  animation:fade-up .65s .32s var(--ease) both;
-}
-
-@keyframes fade-up {
-  from { transform:translateY(20px); opacity:0 }
-  to   { transform:translateY(0); opacity:1 }
-}
-
-/* ══════════════════════════════════════
-   GRID WRAPPER
-══════════════════════════════════════ */
-.grid-wrap {
-  position:relative; z-index:1;
-  max-width:1320px; margin:0 auto;
-  padding:0 clamp(16px,4vw,48px) clamp(48px,6vw,80px);
-}
-
-.stats-row {
-  display:flex; gap:clamp(12px,2vw,24px);
-  margin-bottom:clamp(28px,4vw,44px);
-  flex-wrap:wrap;
-  animation:fade-up .65s .45s var(--ease) both;
-}
-.stat-chip {
-  flex:1; min-width:130px;
-  padding:16px 20px; border-radius:14px;
-  background:var(--card); border:1px solid var(--bdr);
-  transition:border-color .3s,transform .3s;
-}
-.stat-chip:hover { border-color:var(--bdr2); transform:translateY(-3px) }
-.stat-chip .label { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--txd); margin-bottom:6px }
-.stat-chip .value { font-family:"Clash Display",sans-serif; font-size:1.6rem; font-weight:700; color:var(--ac) }
-.stat-chip .sub   { font-size:.72rem; color:var(--txm); margin-top:2px }
-
-/* ══════════════════════════════════════
-   PRODUK GRID
-══════════════════════════════════════ */
-#produkContainer {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:clamp(14px,2vw,22px);
-}
-@media(max-width:600px){ #produkContainer{ grid-template-columns:1fr 1fr; gap:12px } }
-@media(max-width:360px){ #produkContainer{ grid-template-columns:1fr } }
-
-/* ══════════════════════════════════════
-   CARD
-══════════════════════════════════════ */
-.card {
-  background:var(--card); border:1px solid var(--bdr); border-radius:20px;
-  overflow:hidden; cursor:pointer;
-  display:flex; flex-direction:column;
-  transition:transform .4s var(--ease),border-color .3s,box-shadow .4s,background .3s;
-  position:relative;
-}
-.card::before {
-  content:""; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(135deg,var(--glow),transparent);
-  opacity:0; transition:opacity .4s; pointer-events:none;
-}
-.card:hover {
-  transform:translateY(-8px) scale(1.012);
-  border-color:var(--bdr2); background:var(--card-hov);
-  box-shadow:var(--sh), 0 0 40px var(--glow2);
-}
-.card:hover::before { opacity:1 }
-
-.card-img {
-  width:100%; height:clamp(130px,20vw,175px);
-  display:flex; justify-content:center; align-items:center;
-  font-size:clamp(3rem,8vw,4.5rem);
-  background:linear-gradient(145deg,var(--bg3) 0%,var(--bg2) 100%);
-  position:relative; overflow:hidden; flex-shrink:0;
-  transition:transform .6s var(--ease);
-}
-.card-img::after {
-  content:""; position:absolute; inset:0;
-  background:radial-gradient(circle at 50% 100%,var(--glow) 0%,transparent 65%);
-  opacity:0; transition:opacity .4s;
-}
-.card:hover .card-img { transform:scale(1.05) }
-.card:hover .card-img::after { opacity:1 }
-
-.card-body { padding:16px 18px 18px; display:flex; flex-direction:column; flex:1 }
-
-.card-tag {
-  display:inline-flex; align-items:center; gap:4px;
-  font-size:.6rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--pill-tx); background:var(--pill-bg);
-  padding:3px 9px; border-radius:5px; margin-bottom:8px; width:fit-content;
-}
-
-.card-name {
-  font-family:"Clash Display",sans-serif;
-  font-size:.95rem; font-weight:600; letter-spacing:-.02em;
-  color:var(--tx); line-height:1.35; margin-bottom:10px;
-}
-
-.card-footer {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-top:auto; gap:8px;
-}
-
-.card-price {
-  font-family:"Clash Display",sans-serif;
-  font-size:1rem; font-weight:700; color:var(--ac);
-}
-
-.btn-detail {
-  padding:7px 14px;
-  background:var(--pill-bg); color:var(--ac);
-  border:1px solid var(--bdr); border-radius:8px;
-  font-family:"Clash Display",sans-serif; font-size:.7rem; font-weight:700;
-  letter-spacing:.05em; cursor:pointer;
-  transition:background .3s,color .3s,border-color .3s,transform .2s;
-  white-space:nowrap;
-}
-.btn-detail:hover {
-  background:var(--ac); color:var(--bg);
-  border-color:var(--ac); transform:scale(1.04);
-}
-.btn-detail:active { transform:scale(.96) }
-
-.stock-dot {
-  display:inline-block; width:7px; height:7px; border-radius:50%;
-  background:#22c55e; margin-right:5px;
-  box-shadow:0 0 6px rgba(34,197,94,.5);
-}
-
-/* ══════════════════════════════════════
-   EMPTY / LOADING
-══════════════════════════════════════ */
-.empty-state {
-  grid-column:1/-1;
-  display:flex; flex-direction:column; align-items:center;
-  padding:80px 20px; gap:16px;
-}
-.empty-state .empty-icon {
-  font-size:4rem; opacity:.3;
-  animation:float 3s ease-in-out infinite;
-}
-.empty-state p { font-size:.95rem; color:var(--txm); font-weight:500 }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-
-.loading-shimmer {
-  background:var(--card); border:1px solid var(--bdr); border-radius:20px;
-  overflow:hidden; position:relative;
-}
-.loading-shimmer::after {
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(90deg,transparent 0%,var(--bdr) 50%,transparent 100%);
-  animation:shimmer 1.6s ease-in-out infinite;
-}
-@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-.shimmer-img { height:160px; background:var(--bg3) }
-.shimmer-body { padding:16px 18px 18px }
-.shimmer-line { height:12px; background:var(--bg3); border-radius:4px; margin-bottom:10px }
-.shimmer-line.sm { width:55%; height:10px }
-.shimmer-line.md { width:75% }
-.shimmer-line.lg { width:90% }
-.shimmer-btn { height:32px; background:var(--bg3); border-radius:8px; margin-top:8px }
-
-/* ══════════════════════════════════════
-   MODAL
-══════════════════════════════════════ */
-.modal-overlay {
-  display:none; position:fixed; inset:0; z-index:800;
-  background:rgba(6,9,16,.78);
-  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-  align-items:center; justify-content:center; padding:16px;
-}
-.modal-overlay.active { display:flex; animation:overlay-in .25s ease both }
-@keyframes overlay-in { from{opacity:0} to{opacity:1} }
-
-.modal-box {
-  width:100%; max-width:540px; max-height:92vh; overflow-y:auto;
-  background:var(--card); border:1px solid var(--bdr2);
-  border-radius:26px; position:relative;
-  animation:modal-up .45s var(--ease) both;
-  scroll-behavior:smooth;
-}
-@keyframes modal-up { from{transform:translateY(30px) scale(.96);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
-.modal-box::-webkit-scrollbar { width:3px }
-.modal-box::-webkit-scrollbar-thumb { background:var(--bdr); border-radius:4px }
-
-.m-close {
-  position:absolute; top:14px; right:14px; z-index:2;
-  width:34px; height:34px; border-radius:10px;
-  background:var(--bg3); border:1px solid var(--bdr); color:var(--txm);
-  cursor:pointer; font-size:1rem;
-  display:flex; align-items:center; justify-content:center;
-  transition:all .2s; line-height:1;
-}
-.m-close:hover { border-color:var(--bdr2); color:var(--tx); background:var(--bg2) }
-
-.m-hero {
-  width:100%; height:clamp(180px,30vw,230px);
-  display:flex; align-items:center; justify-content:center;
-  font-size:clamp(5rem,14vw,8rem);
-  background:linear-gradient(145deg,var(--bg3),var(--bg2));
-  border-bottom:1px solid var(--bdr);
-  flex-shrink:0;
-}
-
-.m-body { padding:24px 24px 0 }
-.m-tag {
-  display:inline-flex; font-size:.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--pill-tx); background:var(--pill-bg); padding:4px 10px; border-radius:5px; margin-bottom:10px;
-}
-.m-name {
-  font-family:"Clash Display",sans-serif;
-  font-size:clamp(1.3rem,4vw,1.8rem); font-weight:700;
-  letter-spacing:-.03em; line-height:1.15; margin-bottom:16px;
-}
-.m-price {
-  font-family:"Clash Display",sans-serif;
-  font-size:1.5rem; font-weight:700; color:var(--ac);
-  margin-bottom:20px;
-}
-.m-row {
-  display:flex; align-items:center; gap:8px;
-  padding:12px 0; border-top:1px solid var(--bdr);
-  font-size:.875rem; color:var(--txm);
-}
-.m-row strong { color:var(--tx); font-weight:600; min-width:70px }
-.m-desc {
-  padding:14px 0 0; font-size:.875rem; color:var(--txm);
-  line-height:1.7; border-top:1px solid var(--bdr);
-}
-
-.btn-wa {
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  margin:22px 24px 24px;
-  background:linear-gradient(135deg,#22c55e,#16a34a); color:#fff;
-  font-family:"Clash Display",sans-serif; font-size:.9rem; font-weight:700;
-  letter-spacing:.04em; padding:15px 20px; border-radius:14px;
-  text-decoration:none; transition:all .3s; box-shadow:0 8px 30px rgba(34,197,94,.25);
-}
-.btn-wa:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(34,197,94,.35) }
-.btn-wa:active { transform:scale(.98) }
-
-/* ══════════════════════════════════════
-   PAGE LOADER
-══════════════════════════════════════ */
-#pageLoader {
-  position:fixed; inset:0; background:var(--bg); z-index:9999;
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; gap:22px;
-  transition:opacity .7s;
-}
-#pageLoader.done { opacity:0; pointer-events:none }
-.pl-name {
-  font-family:"Clash Display",sans-serif;
-  font-size:1.5rem; font-weight:700; letter-spacing:.06em; color:var(--ac);
-}
-.pl-bar-wrap { width:180px; height:2px; background:var(--bdr); border-radius:2px; overflow:hidden }
-.pl-bar { height:100%; background:linear-gradient(90deg,var(--ac),var(--ac2)); border-radius:2px; width:0; animation:lb 1.4s var(--ease) forwards }
-@keyframes lb { to{width:100%} }
-
-footer {
-  position:relative; z-index:1;
-  border-top:1px solid var(--bdr);
-  padding:24px clamp(16px,4vw,52px);
-  display:flex; align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:10px;
-  max-width:1320px; margin:0 auto;
-}
-footer p { font-size:.78rem; color:var(--txm); font-weight:500 }
-footer span { color:var(--ac) }
-
-@keyframes card-enter {
-  from { transform:translateY(24px) scale(.97); opacity:0 }
-  to   { transform:translateY(0) scale(1); opacity:1 }
-}
-
-::-webkit-scrollbar { width:4px }
-::-webkit-scrollbar-track { background:var(--bg) }
-::-webkit-scrollbar-thumb { background:var(--bdr); border-radius:4px }
-::-webkit-scrollbar-thumb:hover { background:var(--ac) }
+/* UTILS */
+.empty-state { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--txm); }
+#pageLoader { position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; align-items:center; justify-content:center; font-family:"Clash Display",sans-serif; font-size:1.5rem; font-weight:700; color:var(--ac); transition:opacity .5s; }
+#pageLoader.done { opacity:0; pointer-events:none; }
 </style>
 </head>
 <body>
 
-<div id="pageLoader">
-  <div class="pl-name">🏪 UMKM</div>
-  <div class="pl-bar-wrap"><div class="pl-bar"></div></div>
-</div>
-
-<div id="cur"></div>
-<div id="cur-ring"></div>
-
-<div class="bg-canvas">
-  <div class="bg-grid"></div>
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-</div>
+<div id="pageLoader">🏪 MEMUAT DATABASE RELASIONAL...</div>
 
 <header id="mainHeader">
   <a class="nav-logo" href="#">
-    <div class="logo-icon">🏪</div>
-    <span class="logo-text">Katalog<em>UMKM</em></span>
+    <div class="logo-icon">🏪</div>&nbsp;Katalog <span>UMKM 3.0</span>
   </a>
-
-  <div class="nav-controls" id="navControls">
-    <div class="search-wrap">
-      <span class="icon-search">🔍</span>
-      <input type="text" id="search" placeholder="Cari produk...">
-    </div>
-
+  <div class="nav-controls">
+    <input type="text" id="search" placeholder="Cari nama produk...">
     <select id="kategori">
       <option value="">Semua Kategori</option>
     </select>
-
-    <span id="produkCount">0 produk</span>
-    <button class="tt" id="tt" aria-label="Toggle tema"></button>
+    <button class="tt" id="tt"></button>
   </div>
-
-  <button class="hb" id="hb" aria-label="Menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
 </header>
 
-<section class="hero" id="heroSection">
-  <div class="hero-eyebrow">Produk Lokal Terbaik</div>
-  <h1>Temukan <span class="grad">Produk UMKM</span><br>Berkualitas Tinggi</h1>
-  <p>Koleksi produk pilihan dari pelaku usaha lokal kami.<br>Belanja langsung, dukung usaha dalam negeri.</p>
+<section class="hero">
+  <h1>Sistem Hub Data <span>Multi-Tabel</span></h1>
+  <p style="color:var(--txm); margin-top:10px;">Data produk di-join dinamis dari Tb_produk, Tb_kategori, dan Tb_kontak secara real-time.</p>
 </section>
 
 <div class="grid-wrap">
   <div class="stats-row" id="statsRow" style="display:none">
-    <div class="stat-chip">
-      <div class="label">Total Produk</div>
-      <div class="value" id="statTotal">—</div>
-      <div class="sub">Tersedia</div>
-    </div>
-    <div class="stat-chip">
-      <div class="label">Kategori</div>
-      <div class="value" id="statKat">—</div>
-      <div class="sub">Jenis produk</div>
-    </div>
-    <div class="stat-chip">
-      <div class="label">Harga Mulai</div>
-      <div class="value" id="statMin">—</div>
-      <div class="sub">Paling terjangkau</div>
-    </div>
+    <div class="stat-chip"><div class="label">Total Item</div><div class="value" id="statTotal">—</div></div>
+    <div class="stat-chip"><div class="label">Total Kategori</div><div class="value" id="statKat">—</div></div>
+    <div class="stat-chip"><div class="label">Harga Minimum</div><div class="value" id="statMin">—</div></div>
   </div>
 
   <div id="produkContainer">
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
+    <div class="empty-state">Sedang sinkronisasi API data...</div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal">
-  <div class="modal-box" id="modalBox">
+  <div class="modal-box">
     <button class="m-close" id="modalClose">✕</button>
     <div class="m-hero" id="mGambar"></div>
     <div class="m-body">
-      <div class="m-tag" id="mKategori"></div>
+      <div class="card-tag" id="mKategori" style="margin-bottom:6px;"></div>
       <div class="m-name" id="mNama"></div>
       <div class="m-price" id="mHarga"></div>
-      <div class="m-row"><strong>Stok</strong><span id="mStok"></span></div>
+      <div class="m-info"><strong>Stok Produk:</strong> <span id="mStok"></span></div>
+      <div class="m-info"><strong>Owner/Toko:</strong> <span id="mOwner"></span></div>
       <div class="m-desc" id="mDeskripsi"></div>
     </div>
-    <a id="mWa" class="btn-wa" target="_blank" rel="noopener">
-      💬 Hubungi Penjual via WhatsApp
-    </a>
+    <a id="mWa" class="btn-wa" target="_blank">💬 Hubungi Via WhatsApp Terelasi</a>
   </div>
 </div>
 
-<footer>
-  <p>Katalog <span>UMKM</span> &mdash; Produk Lokal Berkualitas</p>
-  <p style="color:var(--txd);font-size:.72rem">© 2026</p>
-</footer>
-
 <script>
-/* ── Loader ── */
 window.addEventListener("load", () => {
-  setTimeout(() => {
-    const l = document.getElementById("pageLoader");
-    l.classList.add("done");
-    setTimeout(() => l.remove(), 800);
-  }, 1300);
+  setTimeout(() => document.getElementById("pageLoader").classList.add("done"), 800);
 });
 
-/* ── Custom cursor ── */
-const cur = document.getElementById("cur");
-const ring = document.getElementById("cur-ring");
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener("mousemove", e=>{ mx=e.clientX; my=e.clientY });
-(function loop(){
-  cur.style.left=mx+"px"; cur.style.top=my+"px";
-  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
-  ring.style.left=rx+"px"; ring.style.top=ry+"px";
-  requestAnimationFrame(loop);
-})();
-function addHov(sel){
-  document.querySelectorAll(sel).forEach(el=>{
-    el.addEventListener("mouseenter",()=>document.body.classList.add("cur-hov"));
-    el.addEventListener("mouseleave",()=>document.body.classList.remove("cur-hov"));
-  });
-}
-addHov("a,button,.card,.m-close,.btn-detail,.stat-chip");
-
-/* ── Theme ── */
-document.getElementById("tt").addEventListener("click",()=>{
-  const h=document.documentElement;
-  h.setAttribute("data-theme",h.getAttribute("data-theme")==="dark"?"light":"dark");
+document.getElementById("tt").addEventListener("click", () => {
+  const h = document.documentElement;
+  h.setAttribute("data-theme", h.getAttribute("data-theme") === "dark" ? "light" : "dark");
 });
 
-/* ── Hamburger ── */
-const hb=document.getElementById("hb");
-const nc=document.getElementById("navControls");
-const hdr=document.getElementById("mainHeader");
-function openMenu(){ hb.classList.add("open"); nc.classList.add("open"); hb.setAttribute("aria-expanded","true") }
-function closeMenu(){ hb.classList.remove("open"); nc.classList.remove("open"); hb.setAttribute("aria-expanded","false") }
-hb.addEventListener("click",e=>{ e.stopPropagation(); nc.classList.contains("open")?closeMenu():openMenu() });
-document.addEventListener("click",e=>{ if(!hdr.contains(e.target)) closeMenu() });
-document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ closeMenu(); closeModal() }});
-
-/* ══════════════════════════════════
-   MASUKKAN URL WEB APP GOOGLE APPS SCRIPT KAMU DI SINI
-══════════════════════════════════ */
-const API_URL = "https://script.google.com/macros/s/AKfycbzJHLJtIQGCCyLsnzK-0yafsISAUmxZbLbRDB--Y5o4rWO-SWEjv-mksBSjveriYGYf1w/exec";
+// ⚠️ GANTI STRING DI BAWAH INI DENGAN URL DEPLOYMENT APPS SCRIPT BARU KAMU YANG BERAKHIRAN /exec
+const API_URL = "URL_DEPLOYMENT_BARU_KAMU_DI_SINI";
 
 let produkData = [];
 
-async function loadProduk(){
+async function loadProduk() {
   try {
     const res = await fetch(API_URL);
     const data = await res.json();
     produkData = Array.isArray(data) ? data : [];
     renderProduk(produkData);
-    loadKategori(produkData);
+    loadKategoriDropdown(produkData);
     updateStats(produkData);
-  } catch(err) {
-    document.getElementById("produkContainer").innerHTML =
-      `<div class="empty-state"><div class="empty-icon">⚠️</div><p>Gagal memuat data. Pastikan Deployment Apps Script sudah diatur ke 'Anyone'.</p></div>`;
-    console.error(err);
+  } catch (err) {
+    document.getElementById("produkContainer").innerHTML = 
+      `<div class="empty-state">⚠️ Gagal mengambil relasi data. Periksa kembali Deployment Web App di Google Sheet Anda.</div>`;
   }
 }
 
-function renderProduk(data){
+function renderProduk(data) {
   const container = document.getElementById("produkContainer");
   container.innerHTML = "";
-
-  if(data.length === 0){
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Tidak ada produk ditemukan.</p></div>`;
-    updateCount(0);
+  
+  if (data.length === 0) {
+    container.innerHTML = `<div class="empty-state">Tidak ada data produk yang cocok.</div>`;
     return;
   }
 
-  updateCount(data.length);
-
-  data.forEach((item, i) => {
+  data.forEach(item => {
     const card = document.createElement("div");
     card.className = "card";
-    card.style.cssText = `opacity:0;animation:card-enter .5s ${i*0.07}s var(--ease) both`;
     card.innerHTML = `
       <div class="card-img">${item.gambar}</div>
       <div class="card-body">
@@ -766,83 +184,61 @@ function renderProduk(data){
         <div class="card-name">${item.nama_produk}</div>
         <div class="card-footer">
           <div class="card-price">Rp ${Number(item.harga).toLocaleString('id-ID')}</div>
-          <button class="btn-detail">Detail →</button>
+          <button class="btn-detail">Lihat →</button>
         </div>
       </div>
     `;
-    card.querySelector(".btn-detail").addEventListener("click", e => {
-      e.stopPropagation();
-      detailProduk(item);
-    });
-    card.addEventListener("click", () => detailProduk(item));
+    card.addEventListener("click", () => bukaDetail(item));
     container.appendChild(card);
   });
-
-  addHov(".card,.btn-detail");
 }
 
-function loadKategori(data){
+function loadKategoriDropdown(data) {
   const sel = document.getElementById("kategori");
   sel.innerHTML = `<option value="">Semua Kategori</option>`;
-  const unique = [...new Set(data.map(x=>x.kategori))];
-  unique.forEach(k => sel.innerHTML += `<option value="${k}">${k}</option>`);
+  const listUnik = [...new Set(data.map(x => x.kategori))];
+  listUnik.forEach(kat => sel.innerHTML += `<option value="${kat}">${kat}</option>`);
 }
 
-function updateStats(data){
+function updateStats(data) {
   if(data.length === 0) return;
-  const row = document.getElementById("statsRow");
-  row.style.display = "";
+  document.getElementById("statsRow").style.display = "flex";
   document.getElementById("statTotal").textContent = data.length;
-  document.getElementById("statKat").textContent = [...new Set(data.map(x=>x.kategori))].length;
-  const prices = data.map(x=>Number(x.harga)).filter(p => !isNaN(p) && p > 0);
-  const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
-  document.getElementById("statMin").textContent = "Rp "+Number(minPrice).toLocaleString('id-ID');
+  document.getElementById("statKat").textContent = [...new Set(data.map(x => x.kategori))].length;
+  const listHarga = data.map(x => Number(x.harga)).filter(p => p > 0);
+  const min = listHarga.length > 0 ? Math.min(...listHarga) : 0;
+  document.getElementById("statMin").textContent = "Rp " + min.toLocaleString('id-ID');
 }
 
-function updateCount(n){
-  const el = document.getElementById("produkCount");
-  el.textContent = n+" produk";
-  el.classList.add("visible");
-}
-
-function filterProduk(){
+function filterData() {
   const kw = document.getElementById("search").value.toLowerCase();
   const kat = document.getElementById("kategori").value;
-  const hasil = produkData.filter(item =>
-    item.nama_produk.toLowerCase().includes(kw) &&
-    (kat === "" || item.kategori === kat)
+  const hasil = produkData.filter(item => 
+    item.nama_produk.toLowerCase().includes(kw) && (kat === "" || item.kategori === kat)
   );
   renderProduk(hasil);
 }
+document.getElementById("search").addEventListener("keyup", filterData);
+document.getElementById("kategori").addEventListener("change", filterData);
 
-document.getElementById("search").addEventListener("keyup", filterProduk);
-document.getElementById("kategori").addEventListener("change", filterProduk);
-
-/* ── Modal ── */
-function detailProduk(item){
-  const modal = document.getElementById("modal");
-  document.getElementById("mGambar").textContent    = item.gambar;
-  document.getElementById("mNama").textContent       = item.nama_produk;
-  document.getElementById("mKategori").textContent   = item.kategori;
-  document.getElementById("mHarga").textContent      = "Rp "+Number(item.harga).toLocaleString('id-ID');
-  document.getElementById("mStok").innerHTML         = `<span class="stock-dot"></span>${item.stok}`;
-  document.getElementById("mDeskripsi").textContent  = item.deskripsi;
-  document.getElementById("mWa").href                = "https://wa.me/"+item.kontak;
-
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
+function bukaDetail(item) {
+  document.getElementById("mGambar").textContent = item.gambar;
+  document.getElementById("mKategori").textContent = item.kategori;
+  document.getElementById("mNama").textContent = item.nama_produk;
+  document.getElementById("mHarga").textContent = "Rp " + Number(item.harga).toLocaleString('id-ID');
+  document.getElementById("mStok").textContent = item.stok;
+  document.getElementById("mOwner").textContent = item.nama_pemilik || "Admin Toko";
+  document.getElementById("mDeskripsi").textContent = item.deskripsi;
+  document.getElementById("mWa").href = "https://wa.me/" + item.kontak;
+  
+  document.getElementById("modal").classList.add("active");
 }
 
-function closeModal(){
-  const modal = document.getElementById("modal");
-  modal.classList.remove("active");
-  document.body.style.overflow = "";
+function tutupModal() {
+  document.getElementById("modal").classList.remove("active");
 }
-
-document.getElementById("modalClose").addEventListener("click", closeModal);
-document.getElementById("modal").addEventListener("click", e=>{
-  if(e.target === document.getElementById("modal")) closeModal();
-});
+document.getElementById("modalClose").addEventListener("click", tutupModal);
+document.getElementById("modal").addEventListener("click", e => { if(e.target.id === "modal") tutupModal(); });
 
 loadProduk();
 </script>
