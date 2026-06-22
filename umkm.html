@@ -149,7 +149,6 @@ header {
 @keyframes logo-pulse { 0%,100%{box-shadow:0 0 18px var(--glow)} 50%{box-shadow:0 0 32px var(--glow)} }
 .logo-text em { color:var(--ac); font-style:normal }
 
-/* Controls row */
 .nav-controls {
   display:flex; align-items:center; gap:10px; flex-wrap:nowrap;
 }
@@ -178,20 +177,6 @@ header {
 #search:focus ~ .icon-search,
 .search-wrap:focus-within .icon-search { color:var(--ac) }
 
-/* Select */
-#kategori {
-  padding:9px 32px 9px 12px;
-  background:var(--bg3); color:var(--tx);
-  border:1px solid var(--bdr); border-radius:10px;
-  font-family:"Cabinet Grotesk",sans-serif; font-size:.875rem;
-  transition:border-color .3s,box-shadow .3s,background .5s;
-  outline:none; cursor:pointer; appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a7090' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat; background-position:right 10px center;
-}
-#kategori:focus { border-color:var(--ac); box-shadow:0 0 0 3px var(--glow2) }
-
-/* Theme toggle */
 .tt {
   width:42px; height:23px; background:var(--bg3);
   border:1px solid var(--bdr); border-radius:50px;
@@ -206,7 +191,6 @@ header {
 [data-theme="light"] .tt::before { transform:translateX(19px) }
 .tt:hover { border-color:var(--ac) }
 
-/* Count badge */
 #produkCount {
   font-size:.72rem; font-weight:700;
   background:var(--pill-bg); color:var(--pill-tx);
@@ -216,7 +200,6 @@ header {
 }
 #produkCount.visible { opacity:1 }
 
-/* Hamburger */
 .hb {
   display:none;
   flex-direction:column; justify-content:center; align-items:center;
@@ -235,7 +218,6 @@ header {
 .hb.open span:nth-child(2){ opacity:0; transform:scaleX(0) }
 .hb.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg) }
 
-/* Mobile dropdown */
 @media(max-width:768px){
   .hb { display:flex !important }
   .nav-controls {
@@ -259,7 +241,6 @@ header {
   #search { width:100% !important }
   .search-wrap { flex:1 }
   #search:focus { width:100% !important }
-  #kategori { width:100% }
   .tt { align-self:flex-start }
   #produkCount { align-self:flex-start }
 }
@@ -286,7 +267,6 @@ header {
   content:""; width:6px; height:6px; border-radius:50%;
   background:var(--ac); animation:ping 2s ease-in-out infinite;
 }
-@keyframes ping { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.7);opacity:.4} }
 
 .hero h1 {
   font-family:"Clash Display",sans-serif;
@@ -372,7 +352,6 @@ header {
 }
 .card:hover::before { opacity:1 }
 
-/* Emoji area */
 .card-img {
   width:100%; height:clamp(130px,20vw,175px);
   display:flex; justify-content:center; align-items:center;
@@ -389,15 +368,7 @@ header {
 .card:hover .card-img { transform:scale(1.05) }
 .card:hover .card-img::after { opacity:1 }
 
-/* Card body */
 .card-body { padding:16px 18px 18px; display:flex; flex-direction:column; flex:1 }
-
-.card-tag {
-  display:inline-flex; align-items:center; gap:4px;
-  font-size:.6rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--pill-tx); background:var(--pill-bg);
-  padding:3px 9px; border-radius:5px; margin-bottom:8px; width:fit-content;
-}
 
 .card-name {
   font-family:"Clash Display",sans-serif;
@@ -428,51 +399,16 @@ header {
   background:var(--ac); color:var(--bg);
   border-color:var(--ac); transform:scale(1.04);
 }
-.btn-detail:active { transform:scale(.96) }
 
-/* Stock dot */
-.stock-dot {
-  display:inline-block; width:7px; height:7px; border-radius:50%;
-  background:#22c55e; margin-right:5px;
-  box-shadow:0 0 6px rgba(34,197,94,.5);
-}
-
-/* ══════════════════════════════════════
-   EMPTY / LOADING
-══════════════════════════════════════ */
+/* EMPTY / LOADING */
 .empty-state {
   grid-column:1/-1;
   display:flex; flex-direction:column; align-items:center;
   padding:80px 20px; gap:16px;
 }
-.empty-state .empty-icon {
-  font-size:4rem; opacity:.3;
-  animation:float 3s ease-in-out infinite;
-}
-.empty-state p { font-size:.95rem; color:var(--txm); font-weight:500 }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.empty-state p { font-size:.95rem; color:var(--txm) }
 
-.loading-shimmer {
-  background:var(--card); border:1px solid var(--bdr); border-radius:20px;
-  overflow:hidden; position:relative;
-}
-.loading-shimmer::after {
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(90deg,transparent 0%,var(--bdr) 50%,transparent 100%);
-  animation:shimmer 1.6s ease-in-out infinite;
-}
-@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-.shimmer-img { height:160px; background:var(--bg3) }
-.shimmer-body { padding:16px 18px 18px }
-.shimmer-line { height:12px; background:var(--bg3); border-radius:4px; margin-bottom:10px }
-.shimmer-line.sm { width:55%; height:10px }
-.shimmer-line.md { width:75% }
-.shimmer-line.lg { width:90% }
-.shimmer-btn { height:32px; background:var(--bg3); border-radius:8px; margin-top:8px }
-
-/* ══════════════════════════════════════
-   MODAL
-══════════════════════════════════════ */
+/* MODAL */
 .modal-overlay {
   display:none; position:fixed; inset:0; z-index:800;
   background:rgba(6,9,16,.78);
@@ -487,39 +423,26 @@ header {
   background:var(--card); border:1px solid var(--bdr2);
   border-radius:26px; position:relative;
   animation:modal-up .45s var(--ease) both;
-  scroll-behavior:smooth;
 }
 @keyframes modal-up { from{transform:translateY(30px) scale(.96);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
-.modal-box::-webkit-scrollbar { width:3px }
-.modal-box::-webkit-scrollbar-thumb { background:var(--bdr); border-radius:4px }
 
-/* Modal close */
 .m-close {
   position:absolute; top:14px; right:14px; z-index:2;
   width:34px; height:34px; border-radius:10px;
   background:var(--bg3); border:1px solid var(--bdr); color:var(--txm);
   cursor:pointer; font-size:1rem;
   display:flex; align-items:center; justify-content:center;
-  transition:all .2s; line-height:1;
 }
-.m-close:hover { border-color:var(--bdr2); color:var(--tx); background:var(--bg2) }
 
-/* Modal hero img */
 .m-hero {
   width:100%; height:clamp(180px,30vw,230px);
   display:flex; align-items:center; justify-content:center;
   font-size:clamp(5rem,14vw,8rem);
   background:linear-gradient(145deg,var(--bg3),var(--bg2));
   border-bottom:1px solid var(--bdr);
-  flex-shrink:0;
 }
 
-/* Modal body */
-.m-body { padding:24px 24px 0 }
-.m-tag {
-  display:inline-flex; font-size:.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--pill-tx); background:var(--pill-bg); padding:4px 10px; border-radius:5px; margin-bottom:10px;
-}
+.m-body { padding:24px }
 .m-name {
   font-family:"Clash Display",sans-serif;
   font-size:clamp(1.3rem,4vw,1.8rem); font-weight:700;
@@ -530,32 +453,12 @@ header {
   font-size:1.5rem; font-weight:700; color:var(--ac);
   margin-bottom:20px;
 }
-.m-row {
-  display:flex; align-items:center; gap:8px;
-  padding:12px 0; border-top:1px solid var(--bdr);
-  font-size:.875rem; color:var(--txm);
-}
-.m-row strong { color:var(--tx); font-weight:600; min-width:70px }
 .m-desc {
   padding:14px 0 0; font-size:.875rem; color:var(--txm);
   line-height:1.7; border-top:1px solid var(--bdr);
 }
 
-/* WA Button */
-.btn-wa {
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  margin:22px 24px 24px;
-  background:linear-gradient(135deg,#22c55e,#16a34a); color:#fff;
-  font-family:"Clash Display",sans-serif; font-size:.9rem; font-weight:700;
-  letter-spacing:.04em; padding:15px 20px; border-radius:14px;
-  text-decoration:none; transition:all .3s; box-shadow:0 8px 30px rgba(34,197,94,.25);
-}
-.btn-wa:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(34,197,94,.35) }
-.btn-wa:active { transform:scale(.98) }
-
-/* ══════════════════════════════════════
-   PAGE LOADER
-══════════════════════════════════════ */
+/* PAGE LOADER */
 #pageLoader {
   position:fixed; inset:0; background:var(--bg); z-index:9999;
   display:flex; align-items:center; justify-content:center;
@@ -563,179 +466,86 @@ header {
   transition:opacity .7s;
 }
 #pageLoader.done { opacity:0; pointer-events:none }
-.pl-name {
-  font-family:"Clash Display",sans-serif;
-  font-size:1.5rem; font-weight:700; letter-spacing:.06em; color:var(--ac);
-}
-.pl-bar-wrap { width:180px; height:2px; background:var(--bdr); border-radius:2px; overflow:hidden }
-.pl-bar { height:100%; background:linear-gradient(90deg,var(--ac),var(--ac2)); border-radius:2px; width:0; animation:lb 1.4s var(--ease) forwards }
+.pl-name { font-family:"Clash Display",sans-serif; font-size:1.5rem; font-weight:700; color:var(--ac) }
+.pl-bar-wrap { width:180px; height:2px; background:var(--bdr); overflow:hidden }
+.pl-bar { height:100%; background:linear-gradient(90deg,var(--ac),var(--ac2)); width:0; animation:lb 1.4s var(--ease) forwards }
 @keyframes lb { to{width:100%} }
 
-/* ══════════════════════════════════════
-   FOOTER
-══════════════════════════════════════ */
 footer {
-  position:relative; z-index:1;
-  border-top:1px solid var(--bdr);
-  padding:24px clamp(16px,4vw,52px);
+  border-top:1px solid var(--bdr); padding:24px clamp(16px,4vw,52px);
   display:flex; align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:10px;
   max-width:1320px; margin:0 auto;
 }
-footer p { font-size:.78rem; color:var(--txm); font-weight:500 }
+footer p { font-size:.78rem; color:var(--txm) }
 footer span { color:var(--ac) }
 
-/* ══════════════════════════════════════
-   CARD ANIMATION
-══════════════════════════════════════ */
 @keyframes card-enter {
   from { transform:translateY(24px) scale(.97); opacity:0 }
   to   { transform:translateY(0) scale(1); opacity:1 }
 }
-
-/* ══════════════════════════════════════
-   SCROLLBAR
-══════════════════════════════════════ */
-::-webkit-scrollbar { width:4px }
-::-webkit-scrollbar-track { background:var(--bg) }
-::-webkit-scrollbar-thumb { background:var(--bdr); border-radius:4px }
-::-webkit-scrollbar-thumb:hover { background:var(--ac) }
 </style>
 </head>
 <body>
 
-<!-- Page Loader -->
-<div id="pageLoader">
-  <div class="pl-name">🏪 UMKM</div>
-  <div class="pl-bar-wrap"><div class="pl-bar"></div></div>
-</div>
+<div id="pageLoader"><div class="pl-name">🏪 UMKM</div><div class="pl-bar-wrap"><div class="pl-bar"></div></div></div>
+<div id="cur"></div><div id="cur-ring"></div>
 
-<!-- Cursor -->
-<div id="cur"></div>
-<div id="cur-ring"></div>
-
-<!-- BG -->
 <div class="bg-canvas">
   <div class="bg-grid"></div>
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
+  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
 </div>
 
-<!-- HEADER -->
 <header id="mainHeader">
-
   <a class="nav-logo" href="#">
-    <div class="logo-icon">🏪</div>
-    <span class="logo-text">Katalog<em>UMKM</em></span>
+    <div class="logo-icon">🏪</div><span class="logo-text">Katalog<em>UMKM</em></span>
   </a>
-
   <div class="nav-controls" id="navControls">
-
     <div class="search-wrap">
       <span class="icon-search">🔍</span>
       <input type="text" id="search" placeholder="Cari produk...">
     </div>
-
-    <select id="kategori">
-      <option value="">Semua Kategori</option>
-    </select>
-
     <span id="produkCount">0 produk</span>
-
-    <button class="tt" id="tt" aria-label="Toggle tema"></button>
-
+    <button class="tt" id="tt"></button>
   </div>
-
-  <button class="hb" id="hb" aria-label="Menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-
+  <button class="hb" id="hb"><span></span><span></span><span></span></button>
 </header>
 
-<!-- HERO -->
-<section class="hero" id="heroSection">
+<section class="hero">
   <div class="hero-eyebrow">Produk Lokal Terbaik</div>
   <h1>Temukan <span class="grad">Produk UMKM</span><br>Berkualitas Tinggi</h1>
-  <p>Koleksi produk pilihan dari pelaku usaha lokal kami.<br>Belanja langsung, dukung usaha dalam negeri.</p>
+  <p>Koleksi produk pilihan dari pelaku usaha lokal kami.</p>
 </section>
 
-<!-- MAIN CONTENT -->
 <div class="grid-wrap">
-
-  <!-- Stats row -->
   <div class="stats-row" id="statsRow" style="display:none">
-    <div class="stat-chip">
-      <div class="label">Total Produk</div>
-      <div class="value" id="statTotal">—</div>
-      <div class="sub">Tersedia</div>
-    </div>
-    <div class="stat-chip">
-      <div class="label">Kategori</div>
-      <div class="value" id="statKat">—</div>
-      <div class="sub">Jenis produk</div>
-    </div>
-    <div class="stat-chip">
-      <div class="label">Harga Mulai</div>
-      <div class="value" id="statMin">—</div>
-      <div class="sub">Paling terjangkau</div>
-    </div>
+    <div class="stat-chip"><div class="label">Total Produk</div><div class="value" id="statTotal">—</div></div>
+    <div class="stat-chip"><div class="label">Harga Mulai</div><div class="value" id="statMin">—</div></div>
   </div>
-
-  <!-- Grid produk -->
-  <div id="produkContainer">
-    <!-- shimmer -->
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
-    <div class="loading-shimmer"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line sm"></div><div class="shimmer-line lg"></div><div class="shimmer-line md"></div><div class="shimmer-btn"></div></div></div>
-  </div>
-
+  <div id="produkContainer"></div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal">
-  <div class="modal-box" id="modalBox">
-
+  <div class="modal-box">
     <button class="m-close" id="modalClose">✕</button>
-
     <div class="m-hero" id="mGambar"></div>
-
     <div class="m-body">
-      <div class="m-tag" id="mKategori"></div>
       <div class="m-name" id="mNama"></div>
       <div class="m-price" id="mHarga"></div>
-      <div class="m-row"><strong>Stok</strong><span id="mStok"></span></div>
       <div class="m-desc" id="mDeskripsi"></div>
     </div>
-
-    <a id="mWa" class="btn-wa" target="_blank" rel="noopener">
-      💬 Hubungi Penjual via WhatsApp
-    </a>
-
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <p>Katalog <span>UMKM</span> &mdash; Produk Lokal Berkualitas</p>
-  <p style="color:var(--txd);font-size:.72rem">© 2026</p>
-</footer>
+<footer><p>Katalog <span>UMKM</span></p><p>© 2026</p></footer>
 
-<!-- ══════════════════════════════════
-     SCRIPTS
-══════════════════════════════════ -->
 <script>
-/* ── Loader ── */
 window.addEventListener("load", () => {
   setTimeout(() => {
     const l = document.getElementById("pageLoader");
     l.classList.add("done");
-    setTimeout(() => l.remove(), 800);
-  }, 1300);
+  }, 1000);
 });
 
-/* ── Custom cursor ── */
 const cur = document.getElementById("cur");
 const ring = document.getElementById("cur-ring");
 let mx=0,my=0,rx=0,ry=0;
@@ -746,34 +556,16 @@ document.addEventListener("mousemove", e=>{ mx=e.clientX; my=e.clientY });
   ring.style.left=rx+"px"; ring.style.top=ry+"px";
   requestAnimationFrame(loop);
 })();
-function addHov(sel){
-  document.querySelectorAll(sel).forEach(el=>{
-    el.addEventListener("mouseenter",()=>document.body.classList.add("cur-hov"));
-    el.addEventListener("mouseleave",()=>document.body.classList.remove("cur-hov"));
-  });
-}
-addHov("a,button,.card,.m-close,.btn-detail,.stat-chip");
 
-/* ── Theme ── */
 document.getElementById("tt").addEventListener("click",()=>{
   const h=document.documentElement;
   h.setAttribute("data-theme",h.getAttribute("data-theme")==="dark"?"light":"dark");
 });
 
-/* ── Hamburger ── */
-const hb=document.getElementById("hb");
-const nc=document.getElementById("navControls");
-const hdr=document.getElementById("mainHeader");
-function openMenu(){ hb.classList.add("open"); nc.classList.add("open"); hb.setAttribute("aria-expanded","true") }
-function closeMenu(){ hb.classList.remove("open"); nc.classList.remove("open"); hb.setAttribute("aria-expanded","false") }
-hb.addEventListener("click",e=>{ e.stopPropagation(); nc.classList.contains("open")?closeMenu():openMenu() });
-document.addEventListener("click",e=>{ if(!hdr.contains(e.target)) closeMenu() });
-document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ closeMenu(); closeModal() }});
-
 /* ══════════════════════════════════
-   CORE DATA LOGIC (tidak diubah)
+   URL API WEB APP MILIK KAMU SUDAH TERPASANG
 ══════════════════════════════════ */
-const API_URL = "https://script.google.com/macros/s/AKfycbxryOAzFweyMJwuzBXixO4kZPO3-U6_-OHKSHSYNPV86bvuuhDjec77OXK5CdDvrd6WGQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzJHLJtIQGCCyLsnzK-0yafsISAUmxZbLbRDB--Y5o4rWO-SWEjv-mksBSjveriYGYf1w/exec";
 
 let produkData = [];
 
@@ -781,116 +573,70 @@ async function loadProduk(){
   try {
     const res = await fetch(API_URL);
     const data = await res.json();
-    produkData = data;
-    renderProduk(data);
-    loadKategori(data);
-    updateStats(data);
+    produkData = Array.isArray(data) ? data : [];
+    renderProduk(produkData);
+    updateStats(produkData);
   } catch(err) {
-    document.getElementById("produkContainer").innerHTML =
-      `<div class="empty-state"><div class="empty-icon">⚠️</div><p>Gagal memuat data. Coba refresh halaman.</p></div>`;
-    console.error(err);
+    document.getElementById("produkContainer").innerHTML = `<div class="empty-state"><p>Gagal memuat data.</p></div>`;
   }
 }
 
 function renderProduk(data){
   const container = document.getElementById("produkContainer");
   container.innerHTML = "";
-
-  if(!Array.isArray(data) || data.length === 0){
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Tidak ada produk ditemukan.</p></div>`;
-    updateCount(0);
+  if(data.length === 0){
+    container.innerHTML = `<div class="empty-state"><p>Tidak ada produk.</p></div>`;
     return;
   }
-
-  updateCount(data.length);
+  document.getElementById("produkCount").textContent = data.length + " produk";
+  document.getElementById("produkCount").classList.add("visible");
 
   data.forEach((item, i) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.style.cssText = `opacity:0;animation:card-enter .5s ${i*0.07}s var(--ease) both`;
+    card.style.animation = `card-enter .5s ${i*0.05}s both`;
+    const hg = item.harga ? Number(item.harga).toLocaleString('id-ID') : '0';
+
     card.innerHTML = `
-      <div class="card-img">${item.gambar}</div>
+      <div class="card-img">${item.gambar || '📦'}</div>
       <div class="card-body">
-        <div class="card-tag">${item.kategori}</div>
-        <div class="card-name">${item.nama_produk}</div>
+        <div class="card-name">${item.nama || 'Tanpa Nama'}</div>
         <div class="card-footer">
-          <div class="card-price">Rp ${Number(item.harga).toLocaleString('id-ID')}</div>
-          <button class="btn-detail">Detail →</button>
+          <div class="card-price">Rp ${hg}</div>
+          <button class="btn-detail">Detail</button>
         </div>
       </div>
     `;
-    card.querySelector(".btn-detail").addEventListener("click", e => {
-      e.stopPropagation();
-      detailProduk(item);
-    });
     card.addEventListener("click", () => detailProduk(item));
     container.appendChild(card);
   });
-
-  /* re-bind hover effect on newly created cards */
-  addHov(".card,.btn-detail");
-}
-
-function loadKategori(data){
-  const sel = document.getElementById("kategori");
-  const unique = [...new Set(data.map(x=>x.kategori))];
-  unique.forEach(k => sel.innerHTML += `<option value="${k}">${k}</option>`);
 }
 
 function updateStats(data){
-  const row = document.getElementById("statsRow");
-  row.style.display = "";
+  if(data.length === 0) return;
+  document.getElementById("statsRow").style.display = "flex";
   document.getElementById("statTotal").textContent = data.length;
-  document.getElementById("statKat").textContent = [...new Set(data.map(x=>x.kategori))].length;
-  const minPrice = Math.min(...data.map(x=>Number(x.harga)));
-  document.getElementById("statMin").textContent = "Rp "+Number(minPrice).toLocaleString('id-ID');
-}
-
-function updateCount(n){
-  const el = document.getElementById("produkCount");
-  el.textContent = n+" produk";
-  el.classList.add("visible");
+  const pr = data.map(x => Number(x.harga)).filter(p => !isNaN(p) && p > 0);
+  const min = pr.length > 0 ? Math.min(...pr) : 0;
+  document.getElementById("statMin").textContent = "Rp " + min.toLocaleString('id-ID');
 }
 
 function filterProduk(){
   const kw = document.getElementById("search").value.toLowerCase();
-  const kat = document.getElementById("kategori").value;
-  const hasil = produkData.filter(item =>
-    item.nama_produk.toLowerCase().includes(kw) &&
-    (kat === "" || item.kategori === kat)
-  );
+  const hasil = produkData.filter(item => item.nama && item.nama.toLowerCase().includes(kw));
   renderProduk(hasil);
 }
-
 document.getElementById("search").addEventListener("keyup", filterProduk);
-document.getElementById("kategori").addEventListener("change", filterProduk);
 
-/* ── Modal ── */
 function detailProduk(item){
-  const modal = document.getElementById("modal");
-  document.getElementById("mGambar").textContent    = item.gambar;
-  document.getElementById("mNama").textContent       = item.nama_produk;
-  document.getElementById("mKategori").textContent   = item.kategori;
-  document.getElementById("mHarga").textContent      = "Rp "+Number(item.harga).toLocaleString('id-ID');
-  document.getElementById("mStok").innerHTML         = `<span class="stock-dot"></span>${item.stok}`;
-  document.getElementById("mDeskripsi").textContent  = item.deskripsi;
-  document.getElementById("mWa").href                = "https://wa.me/"+item.kontak;
-
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
+  document.getElementById("mGambar").textContent = item.gambar || '📦';
+  document.getElementById("mNama").textContent = item.nama || 'Tanpa Nama';
+  document.getElementById("mHarga").textContent = "Rp " + (item.harga ? Number(item.harga).toLocaleString('id-ID') : '0');
+  document.getElementById("mDeskripsi").textContent = item.deskripsi || 'Tidak ada deskripsi.';
+  document.getElementById("modal").classList.add("active");
 }
 
-function closeModal(){
-  const modal = document.getElementById("modal");
-  modal.classList.remove("active");
-  document.body.style.overflow = "";
-}
-
-document.getElementById("modalClose").addEventListener("click", closeModal);
-document.getElementById("modal").addEventListener("click", e=>{
-  if(e.target === document.getElementById("modal")) closeModal();
-});
-
+document.getElementById("modalClose").addEventListener("click", () => document.getElementById("modal").classList.remove("active"));
 loadProduk();
 </script>
 </body>
